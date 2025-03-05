@@ -1,3 +1,6 @@
+---
+import Header from "../components/Header";
+---
 <!doctype html>
 <html lang="en">
 	<head>
@@ -8,6 +11,7 @@
 		<title>Astro Basics</title>
 	</head>
 	<body>
+		<Header client:idle/>
 		<slot />
 	</body>
 </html>
