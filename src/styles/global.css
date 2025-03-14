@@ -4,6 +4,8 @@
 
 @theme {
   --color-jagt: #3B5A34;
+  --color-jagt-100: #6d8f66;
+  --color-jagt-500: #2d4327;
 }
 
 @custom-variant dark (&:is(.dark *));

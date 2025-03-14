@@ -11,7 +11,7 @@ import {
 
 interface Props {
     currentPath: string
-    data: {
+    data?: {
         title: string;
         description: string;
     }[];
