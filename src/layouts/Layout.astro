@@ -1,7 +1,7 @@
 ---
 import Header from "../components/Header";
 import logo from '../assets/logo.png';
-import Hero from "../components/spots/Hero.astro";
+import Footer from "../components/Footer.astro";
 
 const pathname = Astro.url.pathname;
 ---
@@ -19,10 +19,11 @@ const pathname = Astro.url.pathname;
 			<img src={logo.src} />
 			<Header client:idle currentPath={pathname}/>
 			<div class="flex flex-column items-center">
-				<a class="rounded-sm bg-jagt hover:bg-jagt-500 py-2 px-4 text-white block" href="/">Tilmeld</a>
+				<a class="rounded-sm bg-jagt hover:bg-jagt-500 py-2 px-4 text-white block" href="/">Bliv medlem</a>
 			</div>
 		</div>
 		<slot />
+		<Footer></Footer>
 	</body>
 </html>
 
