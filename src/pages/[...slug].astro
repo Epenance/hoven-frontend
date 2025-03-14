@@ -1,6 +1,7 @@
 ---
 import "../styles/global.css";
 import Layout from '../layouts/Layout.astro';
+import Hero from "../components/spots/Hero.astro";
 
 
 export async function getStaticPaths() {
@@ -33,6 +34,10 @@ const { title, text } = Astro.props;
 ---
 
 <Layout>
+    <div class="spots">
+        <Hero></Hero>
+    </div>
+
     <h1 class="text-3xl font-bold underline">{title}</h1>
     <p>{text}</p>
 </Layout>

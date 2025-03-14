@@ -2,6 +2,10 @@
 
 @plugin "tailwindcss-animate";
 
+@theme {
+  --color-jagt: #3B5A34;
+}
+
 @custom-variant dark (&:is(.dark *));
 
 :root {

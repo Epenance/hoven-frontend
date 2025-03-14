@@ -10,13 +10,15 @@ import {
 } from "@/components/ui/navigation-menu"
 
 interface Props {
+    currentPath: string
     data: {
         title: string;
         description: string;
     }[];
 }
 
-export default function Header() {
+export default function Header(props: Props) {
+    console.log(props.currentPath)
     return (
         <NavigationMenu>
             <NavigationMenuList>
