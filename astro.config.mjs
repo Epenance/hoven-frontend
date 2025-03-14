@@ -6,9 +6,11 @@ import react from "@astrojs/react";
 
 // https://astro.build/config
 export default defineConfig({
-  vite: {
+    image: {
+        remotePatterns: [{ protocol: "https" }],
+    },
+    vite: {
       plugins: [tailwindcss()],
-  },
-
-  integrations: [react()],
+    },
+    integrations: [react()],
 });
