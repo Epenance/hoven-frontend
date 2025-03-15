@@ -11,6 +11,7 @@ import {
 
 interface Props {
     currentPath: string
+    className: string
     data?: {
         title: string;
         description: string;
@@ -18,9 +19,9 @@ interface Props {
 }
 
 export default function Header(props: Props) {
-    console.log(props.currentPath)
+    console.log(props.className)
     return (
-        <NavigationMenu>
+        <NavigationMenu className={props.className}>
             <NavigationMenuList>
                 <NavigationMenuItem>
                     <NavigationMenuTrigger><a href={"/products"}>Item One</a></NavigationMenuTrigger>

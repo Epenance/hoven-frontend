@@ -15,10 +15,10 @@ const pathname = Astro.url.pathname;
 		<title>Astro Basics</title>
 	</head>
 	<body>
-		<div class="container mx-auto p-2 flex flex-row justify-between">
+		<div class="container mx-auto flex flex-row justify-between p-5 md:p-0">
 			<img src={logo.src} />
-			<Header client:idle currentPath={pathname}/>
-			<div class="flex flex-column items-center">
+			<Header className="hidden md:flex" client:idle currentPath={pathname}/>
+			<div class=" flex-column items-center hidden md:flex">
 				<a class="rounded-sm bg-jagt hover:bg-jagt-500 py-2 px-4 text-white block" href="/">Bliv medlem</a>
 			</div>
 		</div>
