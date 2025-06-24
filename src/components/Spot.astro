@@ -1,0 +1,21 @@
+---
+import Hero from './spots/Hero.astro'
+import TextAndImage from './spots/TextAndImage.astro'
+import CtaBanner from './spots/CtaBanner.astro'
+import {} from '@strapi/strapi'
+
+type PageContentBlock =
+    | { __component: 'spots.hero'; [key: string]: any }
+    | { __component: 'spots.cta-banner'; [key: string]: any }
+    | { __component: 'spots.text-and-image'; [key: string]: any };
+
+export const componentMap = {
+    'spots.hero': Hero,
+    'spots.text-and-image': TextAndImage,
+    'spots.cta-banner': CtaBanner,
+}
+
+const { spot } = Astro.props as { spot: PageContentBlock[] };
+const Component = componentMap[spot.__component];
+---
+{Component ? <Component {...(spot as any)} /> : null}

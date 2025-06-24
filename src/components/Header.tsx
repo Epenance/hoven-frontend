@@ -19,7 +19,6 @@ interface Props {
 }
 
 export default function Header(props: Props) {
-    console.log(props.className)
     return (
         <NavigationMenu className={props.className}>
             <NavigationMenuList>
