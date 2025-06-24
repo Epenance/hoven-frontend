@@ -15,7 +15,7 @@ export const componentMap = {
     'spots.cta-banner': CtaBanner,
 }
 
-const { spot } = Astro.props as { spot: PageContentBlock[] };
+const { spot } = Astro.props as { spot: PageContentBlock };
 const Component = componentMap[spot.__component];
 ---
 {Component ? <Component {...(spot as any)} /> : null}
