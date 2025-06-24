@@ -19,14 +19,15 @@ export async function getStaticPaths() {
                             }
                         },
                     },
-                }
+                    "spots.text-and-image": {
+                        populate: '*',
+                    },
+                },
             },
         }
     });
 
     return strapiPages.data.map(({ Slug, Title, Content }) => {
-
-        console.log(Content)
         return {
             params: { slug: Slug },
             props: { title: Title, content: Content },
@@ -35,13 +36,14 @@ export async function getStaticPaths() {
 }
 
 const { title, content } = Astro.props;
+
+console.log(content)
 ---
 
-<Layout>
+<Layout title={title}>
     <div class="spots">
-        {title}
-        {(Array.isArray(content) ? content : []).map((spot: any, idx: number) => (
-                <Spot spot={spot} key={idx} />
+        {content.map((spot: any, idx: number) => (
+            <Spot spot={spot} key={idx} />
         ))}
     </div>
 </Layout>
