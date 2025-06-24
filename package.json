@@ -11,6 +11,7 @@
   "dependencies": {
     "@astrojs/react": "^4.2.1",
     "@radix-ui/react-navigation-menu": "^1.2.5",
+    "@sensinum/astro-strapi-blocks": "^1.2.3",
     "@strapi/client": "^1.4.0",
     "@tailwindcss/vite": "^4.0.9",
     "@types/react": "^19.0.10",
@@ -24,8 +25,5 @@
     "tailwind-merge": "^3.0.2",
     "tailwindcss": "^4.0.9",
     "tailwindcss-animate": "^1.0.7"
-  },
-  "devDependencies": {
-    "@strapi/strapi": "^5.16.0"
   }
 }
