@@ -1,6 +1,18 @@
 ---
+import { getImage } from "astro:assets";
 import { StrapiBlocks } from '@sensinum/astro-strapi-blocks';
-const { Text } = Astro.props;
+const { Text, Background } = Astro.props;
+
+const CMS_PATH = import.meta.env.PUBLIC_CMS_PATH
+
+const astroImage = Background ? await getImage({
+    src: CMS_PATH + Background.url,
+    width: 1920,
+    height: 1080,
+    format: 'webp',
+    quality: 80,
+    alt: Background.alternativeText ? Background.alternativeText : "",
+}): undefined;
 ---
 
 <div class="container mx-auto mb-12 p-5 md:p-0">
@@ -8,7 +20,8 @@ const { Text } = Astro.props;
      flex
      rounded-xl
      p-10
-     bg-jagt min-h-160 bg-center bg-cover bg-no-repeat bg-[url(https://plus.unsplash.com/premium_photo-1661819541230-034d07819c9b?q=80&w=2672&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D)]">
+     bg-jagt-100 min-h-160 bg-center bg-cover bg-no-repeat"
+    style={astroImage ? `background-image: url('${astroImage.src}');` : ''}>
         <div class="flex justify-center flex-col md:w-2/4">
             <div class="text-white text-lg mt-4">
                 {<StrapiBlocks data={Text} theme={{

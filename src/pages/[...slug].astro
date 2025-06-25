@@ -13,15 +13,14 @@ export async function getStaticPaths() {
                 populate: '*',
                 on: {
                     "spots.hero": {
-                        populate:{
-                            Link: {
-                                populate: ['Page'],
-                            }
-                        },
+                        populate: '*',
                     },
                     "spots.text-and-image": {
                         populate: '*',
                     },
+                    "spots.cta-banner": {
+                        populate: '*',
+                    }
                 },
             },
         }

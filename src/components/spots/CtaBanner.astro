@@ -1,12 +1,19 @@
-
+---
+import {StrapiBlocks} from "@sensinum/astro-strapi-blocks";
+const { Text } = Astro.props;
+---
 <div class="container mx-auto mb-12 p-5 md:p-0">
     <div class="bg-jagt-100 w-full text-white p-12 rounded-md text-center">
-        <h2 class="text-4xl font-bold mb-4">Se vores kalender</h2>
-        <div class="max-w-2xl mx-auto">
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dignissimos eius in minus non perspiciatis praesentium quasi quis recusandae. Consectetur iusto minima pariatur repellat sequi. Aut minus neque ut? Cum, facere?</p>
-        </div>
-        <div class="mt-8">
-            <a href="#" class="rounded-sm uppercase font-bold bg-jagt hover:bg-jagt-500 py-4 px-8 text-white">Læs mere</a>
-        </div>
+        {<StrapiBlocks data={Text} theme={{
+            extend: {
+                heading: {
+                    h1: ["font-bold md:text-7xl text-4xl"],
+                    h2: ["font-bold text-4xl mb-5"]
+                },
+                paragraph: {
+                    link: ['rounded-sm uppercase font-bold bg-jagt hover:bg-jagt-500 py-4 px-8 text-white inline-block']
+                }
+            }
+        }} />}
     </div>
 </div>
