@@ -25,7 +25,12 @@ export default function MainNav({
     isMobileOpen = false
 }: Props) {
     const [openDropdowns, setOpenDropdowns] = useState<Set<string>>(new Set());
+    const [internalMobileOpen, setInternalMobileOpen] = useState(false);
     const timeoutRefs = useRef<Map<string, NodeJS.Timeout>>(new Map());
+
+    // Use external mobile state if provided, otherwise use internal state
+    const mobileMenuOpen = onMobileToggle ? isMobileOpen : internalMobileOpen;
+    const toggleMobile = onMobileToggle || setInternalMobileOpen;
 
     const handleMouseEnter = (itemTitle: string) => {
         // Clear any existing timeout for this item
@@ -258,11 +263,47 @@ export default function MainNav({
                 {data.map(item => renderMenuItem(item))}
             </div>
 
+            {/* Mobile menu button */}
+            <div className="md:hidden flex items-center">
+                <button
+                    onClick={() => toggleMobile(!mobileMenuOpen)}
+                    className="p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary"
+                >
+                    <span className="sr-only">Open main menu</span>
+                    {mobileMenuOpen ? (
+                        <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    ) : (
+                        <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                    )}
+                </button>
+            </div>
+
             {/* Mobile Navigation */}
-            {isMobileOpen && (
-                <div className={`md:hidden border-t border-gray-200 py-4 ${className}`}>
-                    <div className="space-y-1">
-                        {data.map(item => renderMenuItem(item))}
+            {mobileMenuOpen && (
+                <div className="fixed inset-0 bg-white z-50 md:hidden">
+                    {/* Header with close button */}
+                    <div className="flex justify-between items-center p-5 border-b border-gray-200">
+                        <h2 className="text-lg font-semibold text-gray-900">Menu</h2>
+                        <button
+                            onClick={() => toggleMobile(false)}
+                            className="p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100"
+                        >
+                            <span className="sr-only">Close menu</span>
+                            <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </button>
+                    </div>
+
+                    {/* Menu content */}
+                    <div className="px-5 py-4 overflow-y-auto h-full">
+                        <div className="space-y-1">
+                            {data.map(item => renderMenuItem(item))}
+                        </div>
                     </div>
                 </div>
             )}
