@@ -171,20 +171,36 @@ export default function MainNav({
                 {/* Mobile Menu Item */}
                 <div className="md:hidden">
                     {hasChildren ? (
-                        <button
-                            onClick={() => toggleMobileDropdown(item.title)}
-                            className="w-full flex items-center justify-between px-4 py-3 text-left text-gray-700 hover:bg-gray-50"
-                        >
-                            <span className="font-medium">{item.title}</span>
-                            <svg
-                                className={`h-4 w-4 transform transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`}
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
+                        <div className="flex items-center">
+                            {/* Clickable link for the parent item */}
+                            <a
+                                href={item.href}
+                                className={`
+                                    flex-1 block px-4 py-3 font-medium transition-colors duration-150
+                                    ${itemIsActive 
+                                        ? 'text-primary bg-primary/10 border-r-4 border-primary' 
+                                        : 'text-gray-700 hover:text-primary hover:bg-gray-50'
+                                    }
+                                `}
+                                onClick={() => toggleMobile(false)}
                             >
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                            </svg>
-                        </button>
+                                {item.title}
+                            </a>
+                            {/* Separate toggle button for dropdown */}
+                            <button
+                                onClick={() => toggleMobileDropdown(item.title)}
+                                className="px-4 py-3 text-gray-500 hover:text-gray-700 hover:bg-gray-50"
+                            >
+                                <svg
+                                    className={`h-4 w-4 transform transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`}
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                >
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                                </svg>
+                            </button>
+                        </div>
                     ) : (
                         <a
                             href={item.href}
@@ -195,7 +211,7 @@ export default function MainNav({
                                     : 'text-gray-700 hover:text-primary hover:bg-gray-50'
                                 }
                             `}
-                            onClick={() => onMobileToggle?.(false)}
+                            onClick={() => toggleMobile(false)}
                         >
                             {item.title}
                         </a>
