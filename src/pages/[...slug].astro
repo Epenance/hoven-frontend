@@ -1,48 +1,48 @@
 ---
 import "../styles/global.css";
 import Layout from '../layouts/Layout.astro';
-import Hero from "../components/spots/Hero.astro";
-import TextAndImage from "../components/spots/TextAndImage.astro";
-import CtaBanner from "../components/spots/CtaBanner.astro";
-
+import { strapiClient } from "../clients/strapi";
+import Spot from '../components/Spot.astro'
 
 export async function getStaticPaths() {
-    const pages = [
-        {
-            slug: undefined,
-            title: "Astro Store",
-            text: "Welcome to the Astro store!",
-        },
-        {
-            slug: "products",
-            title: "Astro products",
-            text: "We have lots of products for you",
-        },
-        {
-            slug: "products/astro-handbook",
-            title: "The ultimate Astro handbook",
-            text: "If you want to learn Astro, you must read this book.",
-        },
-    ];
-    return pages.map(({ slug, title, text }) => {
+    const collection = strapiClient.collection('pages')
+
+    const strapiPages = await collection.find({
+        populate: {
+            Content: {
+                populate: '*',
+                on: {
+                    "spots.hero": {
+                        populate: '*',
+                    },
+                    "spots.text-and-image": {
+                        populate: '*',
+                    },
+                    "spots.cta-banner": {
+                        populate: '*',
+                    }
+                },
+            },
+        }
+    });
+
+    return strapiPages.data.map(({ Slug, Title, Content }) => {
         return {
-            params: { slug },
-            props: { title, text },
+            params: { slug: Slug },
+            props: { title: Title, content: Content },
         };
     });
 }
 
-const { title, text } = Astro.props;
+const { title, content } = Astro.props;
+
+console.log(content)
 ---
 
-<Layout>
+<Layout title={title}>
     <div class="spots">
-        <Hero></Hero>
-        <TextAndImage></TextAndImage>
-        <TextAndImage reverse></TextAndImage>
-        <CtaBanner></CtaBanner>
+        {content.map((spot: any, idx: number) => (
+            <Spot spot={spot} key={idx} />
+        ))}
     </div>
-
-    <h1 class="text-3xl font-bold underline">{title}</h1>
-    <p>{text}</p>
 </Layout>

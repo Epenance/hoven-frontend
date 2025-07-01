@@ -7,7 +7,7 @@ import react from "@astrojs/react";
 // https://astro.build/config
 export default defineConfig({
     image: {
-        remotePatterns: [{ protocol: "https" }],
+        domains: ['localhost'],
     },
     vite: {
       plugins: [tailwindcss()],
