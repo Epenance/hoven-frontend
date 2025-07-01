@@ -1,9 +1,23 @@
 ---
-import Header from "../components/Header";
+import MainNav from "../components/MainNav";
 import logo from '../assets/logo.png';
 import Footer from "../components/Footer.astro";
 
 const pathname = Astro.url.pathname;
+
+const menu = [
+	{ title: 'Forside', href: '/', children: [] },
+	{ title: 'Om os', href: '/om-os', children: [
+			{ title: 'Jagt', href: '/jagt', children: [] },
+			{ title: 'Medlemmer', href: '/medlemmer', children: [] },
+			{ title: 'Kontakt', href: '/kontakt', children: [{ title: 'Jagt', href: '/jagt', children: [] },
+					{ title: 'Medlemmer', href: '/medlemmer', children: [] },
+					{ title: 'Kontakt', href: '/kontakt', children: [] },] },
+		] },
+	{ title: 'Jagt', href: '/jagt', children: [] },
+	{ title: 'Medlemmer', href: '/medlemmer', children: [] },
+	{ title: 'Kontakt', href: '/kontakt', children: [] },
+]
 
 const { title } = Astro.props;
 ---
@@ -19,7 +33,7 @@ const { title } = Astro.props;
 	<body>
 		<div class="container mx-auto flex flex-row justify-between p-5 md:p-0">
 			<img src={logo.src} />
-			<Header className="hidden md:flex" client:idle currentPath={pathname}/>
+			<MainNav className="hidden md:flex" data={menu} client:idle currentPath={pathname}/>
 			<div class=" flex-column items-center hidden md:flex">
 				<a class="rounded-sm bg-jagt hover:bg-jagt-500 py-2 px-4 text-white block" href="/">Bliv medlem</a>
 			</div>
