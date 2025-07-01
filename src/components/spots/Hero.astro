@@ -1,7 +1,18 @@
 ---
 import { getImage } from "astro:assets";
 import { StrapiBlocks } from '@sensinum/astro-strapi-blocks';
-const { Text, Background } = Astro.props;
+import { getBackgroundClasses } from '../../lib/background';
+import type { SpotProps } from './types';
+
+interface Props extends SpotProps {
+    Text?: any;
+    Background?: {
+        url: string;
+        alternativeText?: string;
+    };
+}
+
+const { Text, Background, Configuration } = Astro.props;
 
 const CMS_PATH = import.meta.env.PUBLIC_CMS_PATH
 
@@ -13,29 +24,28 @@ const astroImage = Background ? await getImage({
     quality: 80,
     alt: Background.alternativeText ? Background.alternativeText : "",
 }): undefined;
+
+const backgroundClasses = getBackgroundClasses(Configuration?.Background);
 ---
 
-<div class="container mx-auto mb-12 p-5 md:p-0">
-    <div class="w-full px-12
-     flex
-     rounded-xl
-     p-10
-     bg-jagt-100 min-h-160 bg-center bg-cover bg-no-repeat"
-    style={astroImage ? `background-image: url('${astroImage.src}');` : ''}>
-        <div class="flex justify-center flex-col md:w-2/4">
-            <div class="text-white text-lg mt-4">
-                {<StrapiBlocks data={Text} theme={{
-                    extend: {
-                        heading: {
-                            h1: ["uppercase text-white font-bold md:text-7xl text-4xl"]
-                        },
-                        paragraph: {
-                            link: ['rounded-sm uppercase font-bold bg-jagt hover:bg-jagt-500 py-4 px-8 text-white inline-block']
+<div class={backgroundClasses}>
+    <div class="container mx-auto p-5 md:p-0">
+        <div class="w-full px-12 flex rounded-xl p-10 min-h-160 bg-center bg-cover bg-no-repeat"
+        style={astroImage ? `background-image: url('${astroImage.src}');` : ''}>
+            <div class="flex justify-center flex-col md:w-2/4">
+                <div class="text-white text-lg mt-4">
+                    {<StrapiBlocks data={Text} theme={{
+                        extend: {
+                            heading: {
+                                h1: ["uppercase text-white font-bold md:text-7xl text-4xl"]
+                            },
+                            paragraph: {
+                                link: ['rounded-sm uppercase font-bold bg-jagt hover:bg-jagt-500 py-4 px-8 text-white inline-block']
+                            }
                         }
-                    }
-                }} />}
+                    }} />}
+                </div>
             </div>
         </div>
     </div>
 </div>
-

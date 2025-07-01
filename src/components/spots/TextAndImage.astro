@@ -1,8 +1,10 @@
 ---
 import { Image } from 'astro:assets';
 import {StrapiBlocks} from "@sensinum/astro-strapi-blocks";
+import { getBackgroundClasses } from '../../lib/background';
+import type { SpotProps } from './types';
 
-interface Props {
+interface Props extends SpotProps {
     Reversed?: boolean;
     Text?: any
     Media?: any
@@ -10,25 +12,28 @@ interface Props {
 
 const CMS_PATH = import.meta.env.PUBLIC_CMS_PATH
 
-const { Reversed, Text, Media } = Astro.props;
+const { Reversed, Text, Media, Configuration } = Astro.props;
+
+const backgroundClasses = getBackgroundClasses(Configuration?.Background);
 ---
 
-
-<div class="container mx-auto mb-12 p-5 md:p-0">
-    <div class={`flex flex-col-reverse justify-between ${Reversed ? 'md:flex-row-reverse' : 'md:flex-row'}`}>
-        <div class="md:w-1/2 flex flex-col justify-center md:p-5 py-5 max-w-xl">
-            {<StrapiBlocks data={Text} theme={{
-                extend: {
-                    heading: {
-                        h1: ["font-bold md:text-7xl text-4xl mb-4"],
-                        h2: ["font-bold text-4xl mb-5"]
-                    },
-                    paragraph: {
-                        link: ['rounded-sm uppercase font-bold bg-jagt hover:bg-jagt-500 py-4 px-8 text-white inline-block']
+<div class={backgroundClasses}>
+    <div class="container mx-auto">
+        <div class={`flex flex-col-reverse justify-between ${Reversed ? 'md:flex-row-reverse' : 'md:flex-row'}`}>
+            <div class="md:w-1/2 flex flex-col justify-center md:p-5 py-5 max-w-xl">
+                {<StrapiBlocks data={Text} theme={{
+                    extend: {
+                        heading: {
+                            h1: ["font-bold md:text-7xl text-4xl mb-4"],
+                            h2: ["font-bold text-4xl mb-5"]
+                        },
+                        paragraph: {
+                            link: ['rounded-sm uppercase font-bold bg-jagt hover:bg-jagt-500 py-4 px-8 text-white inline-block']
+                        }
                     }
-                }
-            }} />}
+                }} />}
+            </div>
+            <div class="md:w-1/2 flex flex-col justify-center"><Image  class="rounded-2xl w-full" width={Media.width} height={Media.height} src={CMS_PATH + Media.url} alt={Media.alternativeText ? Media.alternativeText : ""} /></div>
         </div>
-        <div class="md:w-1/2 flex flex-col justify-center"><Image  class="rounded-2xl w-full" width={Media.width} height={Media.height} src={CMS_PATH + Media.url} alt={Media.alternativeText ? Media.alternativeText : ""} /></div>
     </div>
 </div>
