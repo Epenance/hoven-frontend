@@ -32,6 +32,13 @@ export default function MainNav({
     const mobileMenuOpen = onMobileToggle ? isMobileOpen : internalMobileOpen;
     const toggleMobile = onMobileToggle || setInternalMobileOpen;
 
+    // Clear dropdown state when mobile menu closes
+    useEffect(() => {
+        if (!mobileMenuOpen) {
+            setOpenDropdowns(new Set());
+        }
+    }, [mobileMenuOpen]);
+
     const handleMouseEnter = (itemTitle: string) => {
         // Clear any existing timeout for this item
         const existingTimeout = timeoutRefs.current.get(itemTitle);
@@ -82,8 +89,8 @@ export default function MainNav({
             <div
                 key={item.title}
                 className="relative group"
-                onMouseEnter={() => level === 0 && handleMouseEnter(item.title)}
-                onMouseLeave={() => level === 0 && handleMouseLeave(item.title)}
+                onMouseEnter={() => level === 0 && !mobileMenuOpen && handleMouseEnter(item.title)}
+                onMouseLeave={() => level === 0 && !mobileMenuOpen && handleMouseLeave(item.title)}
             >
                 {/* Desktop Menu Item */}
                 <div className="hidden md:block">
