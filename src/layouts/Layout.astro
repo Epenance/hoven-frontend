@@ -1,9 +1,71 @@
 ---
-import Header from "../components/Header";
+import MainNav from "../components/MainNav";
 import logo from '../assets/logo.png';
 import Footer from "../components/Footer.astro";
+import { strapiClient } from "../clients/strapi";
+
+// Type definitions for Strapi menu data
+interface StrapiMenuItem {
+	id: number;
+	documentId: string;
+	title: string;
+	description?: string;
+	href?: string;
+	order: number;
+	isActive: boolean;
+	createdAt: string;
+	updatedAt: string;
+	publishedAt: string;
+	parent?: StrapiMenuItem | null;
+	children: StrapiMenuItem[];
+}
+
+interface MenuItem {
+	title: string;
+	description?: string;
+	href?: string;
+	children?: MenuItem[];
+}
+
+const collection = strapiClient.collection('menus')
+
+const menuItems = await collection.find({
+	populate: {
+		children: {
+			populate: {
+				children: {
+					populate: {
+						children: {
+							populate: '*'
+						}
+					}
+				}
+			}
+		},
+		parent: true
+	}
+});
 
 const pathname = Astro.url.pathname;
+
+// Transform Strapi data to the format expected by MainNav
+const transformMenuData = (items: StrapiMenuItem[]): MenuItem[] => {
+	// First, filter to get only top-level items (no parent)
+	const topLevelItems = items.filter(item => !item.parent);
+
+	// Sort by order field
+	const sortedItems = topLevelItems.sort((a, b) => (a.order || 0) - (b.order || 0));
+
+	// Transform each item to the expected format
+	return sortedItems.map(item => ({
+		title: item.title,
+		description: item.description,
+		href: item.href,
+		children: item.children && item.children.length > 0 ? transformMenuData(item.children) : []
+	}));
+};
+
+const menu = transformMenuData(menuItems.data as StrapiMenuItem[]);
 
 const { title } = Astro.props;
 ---
@@ -19,7 +81,7 @@ const { title } = Astro.props;
 	<body>
 		<div class="container mx-auto flex flex-row justify-between p-5 md:p-0">
 			<img src={logo.src} />
-			<Header className="hidden md:flex" client:idle currentPath={pathname}/>
+			<MainNav data={menu} client:idle currentPath={pathname}/>
 			<div class=" flex-column items-center hidden md:flex">
 				<a class="rounded-sm bg-jagt hover:bg-jagt-500 py-2 px-4 text-white block" href="/">Bliv medlem</a>
 			</div>
