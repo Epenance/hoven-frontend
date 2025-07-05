@@ -6,8 +6,10 @@
 
   --color-jagt: #3B5A34;
   --color-jagt-100: #7a8f59;
+  --color-jagt-200: rgb(74, 107, 66);
   --color-jagt-300: rgba(59, 90, 52, 0.95);
   --color-jagt-500: #2d4327;
+  --color-jagt-600: rgb(42, 64, 42);
 }
 
 @custom-variant dark (&:is(.dark *));

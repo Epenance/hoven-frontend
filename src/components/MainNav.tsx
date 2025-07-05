@@ -101,7 +101,7 @@ export default function MainNav({
                             ${level > 0 
                                 ? (itemIsActive 
                                     ? 'text-primary font-medium' 
-                                    : 'text-gray-700 hover:text-primary'
+                                    : 'text-jagt-300 hover:text-primary'
                                   )
                                 : (itemIsActive 
                                     ? 'text-white font-medium' 
@@ -121,7 +121,7 @@ export default function MainNav({
                     {/* Desktop Dropdown */}
                     {hasChildren && isOpen && (
                         <div className={`
-                            absolute top-full ${level === 0 ? 'left-0' : 'left-full top-0'} mt-1 w-64 
+                            absolute top-full ${level === 0 ? 'left-1/2 transform -translate-x-1/2' : 'left-full top-0'} mt-1 min-w-52 
                             bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-50
                             transform transition-all duration-200 ease-out
                             opacity-100 scale-100
@@ -134,13 +134,13 @@ export default function MainNav({
                                             block px-4 py-3 text-sm transition-colors duration-150
                                             ${isActive(child.href)
                                                 ? 'text-primary bg-primary/5 border-r-2 border-primary'
-                                                : 'text-gray-700 hover:text-primary hover:bg-gray-50'
+                                                : 'text-jagt-600 hover:text-primary hover:bg-gray-50'
                                             }
                                         `}
                                     >
                                         <div className="font-medium">{child.title}</div>
                                         {child.description && (
-                                            <div className="text-xs text-gray-500 mt-1">{child.description}</div>
+                                            <div className="text-xs text-jagt-100 mt-1">{child.description}</div>
                                         )}
                                     </a>
 
