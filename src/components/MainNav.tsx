@@ -98,10 +98,10 @@ export default function MainNav({
                         <a
                             href={item.href}
                             className={`
-                                flex items-center px-4 py-2 text-sm font-medium rounded-md transition-colors duration-200
+                                flex items-center px-4 py-2 text-sm font-medium
                                 ${itemIsActive 
-                                    ? 'text-primary bg-primary/10' 
-                                    : 'text-gray-700 hover:text-primary hover:bg-gray-50'
+                                    ? 'text-white' 
+                                    : 'text-white hover:text-primary'
                                 }
                             `}
                         >
@@ -116,7 +116,7 @@ export default function MainNav({
                         <button
                             className={`
                                 flex items-center px-4 py-2 text-sm font-medium rounded-md transition-colors duration-200
-                                text-gray-700 hover:text-primary hover:bg-gray-50
+                                text-white hover:text-primary
                             `}
                         >
                             {item.title}
