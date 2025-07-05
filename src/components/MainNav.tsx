@@ -59,7 +59,7 @@ export default function MainNav({
                 newSet.delete(itemTitle);
                 return newSet;
             });
-        }, 150);
+        }, 50);
 
         timeoutRefs.current.set(itemTitle, timeout);
     };
