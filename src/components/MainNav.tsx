@@ -5,7 +5,7 @@ import { useState, useRef, useEffect } from 'react';
 interface MenuItem {
     title: string;
     description?: string;
-    href?: string;
+    href: string; // Made required since all menu items will have href
     children?: MenuItem[];
 }
 
@@ -16,6 +16,7 @@ interface Props {
     onMobileToggle?: (isOpen: boolean) => void;
     isMobileOpen?: boolean;
 }
+
 
 export default function MainNav({
     currentPath,
@@ -75,8 +76,7 @@ export default function MainNav({
         });
     };
 
-    const isActive = (href?: string) => {
-        if (!href) return false;
+    const isActive = (href: string) => {
         return currentPath === href || currentPath.startsWith(href + '/');
     };
 
@@ -94,39 +94,29 @@ export default function MainNav({
             >
                 {/* Desktop Menu Item */}
                 <div className="hidden md:block">
-                    {item.href ? (
-                        <a
-                            href={item.href}
-                            className={`
-                                flex items-center px-4 py-2 text-sm font-medium
-                                ${itemIsActive 
-                                    ? 'text-white' 
+                    <a
+                        href={item.href}
+                        className={`
+                            flex items-center px-4 py-2 text-sm
+                            ${level > 0 
+                                ? (itemIsActive 
+                                    ? 'text-primary font-medium' 
+                                    : 'text-gray-700 hover:text-primary'
+                                  )
+                                : (itemIsActive 
+                                    ? 'text-white font-medium' 
                                     : 'text-white hover:text-primary'
-                                }
-                            `}
-                        >
-                            {item.title}
-                            {hasChildren && (
-                                <svg className="ml-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                                </svg>
-                            )}
-                        </a>
-                    ) : (
-                        <button
-                            className={`
-                                flex items-center px-4 py-2 text-sm font-medium rounded-md transition-colors duration-200
-                                text-white hover:text-primary
-                            `}
-                        >
-                            {item.title}
-                            {hasChildren && (
-                                <svg className="ml-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                                </svg>
-                            )}
-                        </button>
-                    )}
+                                  )
+                            }
+                        `}
+                    >
+                        {item.title}
+                        {hasChildren && (
+                            <svg className="ml-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                            </svg>
+                        )}
+                    </a>
 
                     {/* Desktop Dropdown */}
                     {hasChildren && isOpen && (
@@ -138,30 +128,21 @@ export default function MainNav({
                         `}>
                             {item.children?.map((child) => (
                                 <div key={child.title} className="relative">
-                                    {child.href ? (
-                                        <a
-                                            href={child.href}
-                                            className={`
-                                                block px-4 py-3 text-sm transition-colors duration-150
-                                                ${isActive(child.href)
-                                                    ? 'text-primary bg-primary/5 border-r-2 border-primary'
-                                                    : 'text-gray-700 hover:text-primary hover:bg-gray-50'
-                                                }
-                                            `}
-                                        >
-                                            <div className="font-medium">{child.title}</div>
-                                            {child.description && (
-                                                <div className="text-xs text-gray-500 mt-1">{child.description}</div>
-                                            )}
-                                        </a>
-                                    ) : (
-                                        <div className="px-4 py-3">
-                                            <div className="font-medium text-gray-700">{child.title}</div>
-                                            {child.description && (
-                                                <div className="text-xs text-gray-500 mt-1">{child.description}</div>
-                                            )}
-                                        </div>
-                                    )}
+                                    <a
+                                        href={child.href}
+                                        className={`
+                                            block px-4 py-3 text-sm transition-colors duration-150
+                                            ${isActive(child.href)
+                                                ? 'text-primary bg-primary/5 border-r-2 border-primary'
+                                                : 'text-gray-700 hover:text-primary hover:bg-gray-50'
+                                            }
+                                        `}
+                                    >
+                                        <div className="font-medium">{child.title}</div>
+                                        {child.description && (
+                                            <div className="text-xs text-gray-500 mt-1">{child.description}</div>
+                                        )}
+                                    </a>
 
                                     {/* Nested children */}
                                     {child.children && child.children.length > 0 && (
