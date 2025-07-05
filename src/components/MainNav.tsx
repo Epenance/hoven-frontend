@@ -5,7 +5,7 @@ import { useState, useRef, useEffect } from 'react';
 interface MenuItem {
     title: string;
     description?: string;
-    href?: string;
+    href: string; // Made required since all menu items will have href
     children?: MenuItem[];
 }
 
@@ -16,6 +16,7 @@ interface Props {
     onMobileToggle?: (isOpen: boolean) => void;
     isMobileOpen?: boolean;
 }
+
 
 export default function MainNav({
     currentPath,
@@ -58,7 +59,7 @@ export default function MainNav({
                 newSet.delete(itemTitle);
                 return newSet;
             });
-        }, 150);
+        }, 50);
 
         timeoutRefs.current.set(itemTitle, timeout);
     };
@@ -75,8 +76,7 @@ export default function MainNav({
         });
     };
 
-    const isActive = (href?: string) => {
-        if (!href) return false;
+    const isActive = (href: string) => {
         return currentPath === href || currentPath.startsWith(href + '/');
     };
 
@@ -94,74 +94,55 @@ export default function MainNav({
             >
                 {/* Desktop Menu Item */}
                 <div className="hidden md:block">
-                    {item.href ? (
-                        <a
-                            href={item.href}
-                            className={`
-                                flex items-center px-4 py-2 text-sm font-medium rounded-md transition-colors duration-200
-                                ${itemIsActive 
-                                    ? 'text-primary bg-primary/10' 
-                                    : 'text-gray-700 hover:text-primary hover:bg-gray-50'
-                                }
-                            `}
-                        >
-                            {item.title}
-                            {hasChildren && (
-                                <svg className="ml-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                                </svg>
-                            )}
-                        </a>
-                    ) : (
-                        <button
-                            className={`
-                                flex items-center px-4 py-2 text-sm font-medium rounded-md transition-colors duration-200
-                                text-gray-700 hover:text-primary hover:bg-gray-50
-                            `}
-                        >
-                            {item.title}
-                            {hasChildren && (
-                                <svg className="ml-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                                </svg>
-                            )}
-                        </button>
-                    )}
+                    <a
+                        href={item.href}
+                        className={`
+                            flex items-center px-4 py-2 text-sm
+                            ${level > 0 
+                                ? (itemIsActive 
+                                    ? 'text-primary font-medium' 
+                                    : 'text-jagt-300 hover:text-primary'
+                                  )
+                                : (itemIsActive 
+                                    ? 'text-white font-medium' 
+                                    : 'text-white hover:text-primary'
+                                  )
+                            }
+                        `}
+                    >
+                        {item.title}
+                        {hasChildren && (
+                            <svg className="ml-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                            </svg>
+                        )}
+                    </a>
 
                     {/* Desktop Dropdown */}
                     {hasChildren && isOpen && (
                         <div className={`
-                            absolute top-full ${level === 0 ? 'left-0' : 'left-full top-0'} mt-1 w-64 
+                            absolute top-full ${level === 0 ? 'left-1/2 transform -translate-x-1/2' : 'left-full top-0'} mt-1 min-w-52 
                             bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-50
                             transform transition-all duration-200 ease-out
                             opacity-100 scale-100
                         `}>
                             {item.children?.map((child) => (
                                 <div key={child.title} className="relative">
-                                    {child.href ? (
-                                        <a
-                                            href={child.href}
-                                            className={`
-                                                block px-4 py-3 text-sm transition-colors duration-150
-                                                ${isActive(child.href)
-                                                    ? 'text-primary bg-primary/5 border-r-2 border-primary'
-                                                    : 'text-gray-700 hover:text-primary hover:bg-gray-50'
-                                                }
-                                            `}
-                                        >
-                                            <div className="font-medium">{child.title}</div>
-                                            {child.description && (
-                                                <div className="text-xs text-gray-500 mt-1">{child.description}</div>
-                                            )}
-                                        </a>
-                                    ) : (
-                                        <div className="px-4 py-3">
-                                            <div className="font-medium text-gray-700">{child.title}</div>
-                                            {child.description && (
-                                                <div className="text-xs text-gray-500 mt-1">{child.description}</div>
-                                            )}
-                                        </div>
-                                    )}
+                                    <a
+                                        href={child.href}
+                                        className={`
+                                            block px-4 py-3 text-sm transition-colors duration-150
+                                            ${isActive(child.href)
+                                                ? 'text-primary bg-primary/5 border-r-2 border-primary'
+                                                : 'text-jagt-500 hover:text-primary hover:bg-gray-50'
+                                            }
+                                        `}
+                                    >
+                                        <div className="font-medium">{child.title}</div>
+                                        {child.description && (
+                                            <div className="text-xs text-jagt-100 mt-1">{child.description}</div>
+                                        )}
+                                    </a>
 
                                     {/* Nested children */}
                                     {child.children && child.children.length > 0 && (
@@ -186,17 +167,20 @@ export default function MainNav({
                                     flex-1 block px-4 py-3 font-medium transition-colors duration-150
                                     ${itemIsActive 
                                         ? 'text-primary bg-primary/10 border-r-4 border-primary' 
-                                        : 'text-gray-700 hover:text-primary hover:bg-gray-50'
+                                        : 'text-jagt-600 hover:text-primary hover:bg-jagt-50'
                                     }
                                 `}
                                 onClick={() => toggleMobile(false)}
                             >
-                                {item.title}
+                                <div className="font-medium">{item.title}</div>
+                                {item.description && (
+                                    <div className="text-xs text-jagt-300 mt-1 font-normal">{item.description}</div>
+                                )}
                             </a>
                             {/* Separate toggle button for dropdown */}
                             <button
                                 onClick={() => toggleMobileDropdown(item.title)}
-                                className="px-4 py-3 text-gray-500 hover:text-gray-700 hover:bg-gray-50"
+                                className="px-4 py-3 text-jagt-300 hover:text-jagt-500 hover:bg-jagt-50"
                             >
                                 <svg
                                     className={`h-4 w-4 transform transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`}
@@ -215,18 +199,21 @@ export default function MainNav({
                                 block px-4 py-3 font-medium transition-colors duration-150
                                 ${itemIsActive 
                                     ? 'text-primary bg-primary/10 border-r-4 border-primary' 
-                                    : 'text-gray-700 hover:text-primary hover:bg-gray-50'
+                                    : 'text-jagt-600 hover:text-primary hover:bg-jagt-50'
                                 }
                             `}
                             onClick={() => toggleMobile(false)}
                         >
-                            {item.title}
+                            <div className="font-medium">{item.title}</div>
+                            {item.description && (
+                                <div className="text-xs text-jagt-400 mt-1">{item.description}</div>
+                            )}
                         </a>
                     )}
 
                     {/* Mobile Dropdown */}
                     {hasChildren && isOpen && (
-                        <div className="bg-gray-50 border-l-2 border-gray-200">
+                        <div className="bg-jagt-25 border-l-2 border-jagt-100">
                             {item.children?.map((child) => (
                                 <div key={child.title}>
                                     <a
@@ -235,14 +222,14 @@ export default function MainNav({
                                             block px-8 py-2 text-sm transition-colors duration-150
                                             ${isActive(child.href)
                                                 ? 'text-primary bg-primary/5'
-                                                : 'text-gray-600 hover:text-primary hover:bg-gray-100'
+                                                : 'text-jagt-500 hover:text-primary hover:bg-jagt-50'
                                             }
                                         `}
                                         onClick={() => onMobileToggle?.(false)}
                                     >
                                         <div className="font-medium">{child.title}</div>
                                         {child.description && (
-                                            <div className="text-xs text-gray-500 mt-1">{child.description}</div>
+                                            <div className="text-xs text-jagt-300 mt-1">{child.description}</div>
                                         )}
                                     </a>
 
@@ -252,10 +239,10 @@ export default function MainNav({
                                             key={grandchild.title}
                                             href={grandchild.href}
                                             className={`
-                                                block px-12 py-2 text-xs transition-colors duration-150
+                                                block px-12 py-2 text-sm transition-colors duration-150
                                                 ${isActive(grandchild.href)
                                                     ? 'text-primary bg-primary/5'
-                                                    : 'text-gray-500 hover:text-primary hover:bg-gray-100'
+                                                    : 'text-jagt-300 hover:text-primary hover:bg-jagt-50'
                                                 }
                                             `}
                                             onClick={() => onMobileToggle?.(false)}
@@ -290,7 +277,7 @@ export default function MainNav({
             <div className="md:hidden flex items-center">
                 <button
                     onClick={() => toggleMobile(!mobileMenuOpen)}
-                    className="p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary"
+                    className="p-2 rounded-md text-white hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary cursor-pointer"
                 >
                     <span className="sr-only">Open main menu</span>
                     {mobileMenuOpen ? (

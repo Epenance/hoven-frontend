@@ -78,12 +78,11 @@ const { title } = Astro.props;
 		<meta name="generator" content={Astro.generator} />
 		<title>{title} | Hoven Jagtforening</title>
 	</head>
-	<body>
-		<div class="container mx-auto flex flex-row justify-between p-5 md:p-0">
-			<img src={logo.src} />
-			<MainNav data={menu} client:idle currentPath={pathname}/>
-			<div class=" flex-column items-center hidden md:flex">
-				<a class="rounded-sm bg-jagt hover:bg-jagt-500 py-2 px-4 text-white block" href="/">Bliv medlem</a>
+	<body class="p-[75px_0_0]">
+		<div class="fixed top-0 left-0 w-full bg-jagt-300 h-[75px]">
+			<div class="container mx-auto flex flex-row justify-between px-5 md:p-0 items-center h-full">
+				<img src={logo.src}  class="w-[60px] md:w-[75px]"/>
+				<MainNav data={menu} client:idle currentPath={pathname}/>
 			</div>
 		</div>
 		<slot />
