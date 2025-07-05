@@ -122,7 +122,7 @@ export default function MainNav({
                     {hasChildren && isOpen && (
                         <div className={`
                             absolute top-full ${level === 0 ? 'left-1/2 transform -translate-x-1/2' : 'left-full top-0'} mt-1 min-w-52 
-                            bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-50
+                            bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-100
                             transform transition-all duration-200 ease-out
                             opacity-100 scale-100
                         `}>
@@ -294,7 +294,7 @@ export default function MainNav({
 
             {/* Mobile Navigation */}
             {mobileMenuOpen && (
-                <div className="fixed inset-0 bg-white z-50 md:hidden">
+                <div className="fixed inset-0 bg-white z-100 md:hidden">
                     {/* Header with close button */}
                     <div className="flex justify-between items-center p-5 border-b border-gray-200">
                         <h2 className="text-lg font-semibold text-gray-900">Menu</h2>
