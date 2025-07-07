@@ -23,6 +23,9 @@ export async function getStaticPaths() {
                     },
                     "spots.unique-selling-points": {
                         populate: '*',
+                    },
+                    "spots.fact": {
+                        populate: '*',
                     }
                 },
             },

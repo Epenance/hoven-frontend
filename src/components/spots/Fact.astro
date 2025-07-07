@@ -1,0 +1,68 @@
+---
+export interface Props {
+  title?: string;
+  description?: string;
+  missionTitle?: string;
+  missionText?: string;
+  valuesTitle?: string;
+  valuesText?: string;
+  stats?: Array<{
+    number: string;
+    label: string;
+  }>;
+}
+
+const {
+  title = "About Hunters Union",
+  description = "Founded in 1892, the Hunters Union has been the cornerstone of ethical hunting practices and wildlife conservation in our region. We believe in the sacred bond between hunter and nature, promoting responsible hunting that ensures the preservation of wildlife for future generations.",
+  missionTitle = "Our Mission",
+  missionText = "To preserve hunting traditions while promoting conservation, safety, and ethical practices that ensure wildlife sustainability for generations to come.",
+  valuesTitle = "Our Values",
+  valuesText = "Respect for nature, commitment to conservation, ethical hunting practices, community support, and the passing of knowledge to future hunters.",
+  stats = [
+    { number: "5,000+", label: "Active Members" },
+    { number: "130+", label: "Years of Service" }
+  ]
+} = Astro.props;
+---
+
+<section class="py-16 bg-background">
+  <div class="max-w-6xl mx-auto">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+      <div class="lg:col-span-1 text-jagt-100">
+        <h2 class="text-4xl lg:text-5xl font-semibold text-jagt mb-6 leading-tight">{title}</h2>
+        <p class="text-lg leading-relaxed mb-6">{description}</p>
+        <p class="text-lg leading-relaxed mb-8">
+          Our union comprises over 5,000 active members, from novice hunters seeking guidance to master hunters sharing their expertise. Together, we maintain the highest standards of safety, ethics, and conservation stewardship.
+        </p>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
+          {stats.map((stat) => (
+            <div class="bg-jagt-50/30 p-8 rounded-lg text-center">
+              <div class="text-4xl font-bold text-jagt leading-none mb-2">{stat.number}</div>
+              <div class="text-base text-jagt-100 font-medium">{stat.label}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div class="flex flex-col gap-6">
+        <div class="bg-jagt text-white p-8 rounded-xl">
+          <div class="flex items-center gap-3 mb-4">
+            <span class="text-xl">🛡️</span>
+            <h3 class="text-xl font-semibold">{missionTitle}</h3>
+          </div>
+          <p class="leading-relaxed text-jagt-50">{missionText}</p>
+        </div>
+
+        <div class="bg-jagt text-white p-8 rounded-xl">
+          <div class="flex items-center gap-3 mb-4">
+            <span class="text-xl">🏆</span>
+            <h3 class="text-xl font-semibold">{valuesTitle}</h3>
+          </div>
+          <p class="leading-relaxed text-jagt-50">{valuesText}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
