@@ -1,6 +1,7 @@
 ---
 import type { SpotProps } from "./types";
 import {getBackgroundClasses} from "../../lib/background";
+import {StrapiBlocks} from "@sensinum/astro-strapi-blocks";
 
 interface UspItem  {
     Title?: string;
@@ -9,16 +10,61 @@ interface UspItem  {
 }
 
 interface Props extends SpotProps {
-    Text?: any[]
+    Text?: any;
     USPs?: UspItem[];
 }
 
 const { Text, USPs, Configuration } = Astro.props as Props;
-console.log(USPs);
 const backgroundClasses = getBackgroundClasses(Configuration?.Background);
 ---
+
 <div class={backgroundClasses}>
-    <div class="container mx-auto">
-        <h1>Hej fra USP</h1>
+    <div class="container mx-auto px-4 py-16">
+        <!-- Header Section -->
+        <div class="text-center mb-12">
+            {<StrapiBlocks data={Text} theme={{
+                extend: {
+                    heading: {
+                        h1: ["font-bold md:text-7xl text-4xl mb-4"],
+                        h2: ["font-bold text-4xl mb-5"]
+                    },
+                    paragraph: {
+                        link: ['rounded-sm uppercase font-bold bg-jagt hover:bg-jagt-500 py-4 px-8 text-white inline-block']
+                    }
+                }
+            }} />}
+        </div>
+
+        <!-- USP Cards Grid -->
+        {USPs && USPs.length > 0 && (
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+                {USPs.map((usp) => (
+                    <div class="bg-white rounded-lg border border-gray-200 p-8 text-center hover:shadow-lg transition-shadow duration-300">
+                        <!-- Icon -->
+                        {usp.Icon && (
+                            <div class="flex justify-center mb-6">
+                                <div class="w-16 h-16 flex items-center justify-center">
+                                    <i class={`far text-6xl fa-${usp.Icon} text-4xl text-jagt-600`}></i>
+                                </div>
+                            </div>
+                        )}
+
+                        <!-- Title -->
+                        {usp.Title && (
+                            <h3 class="text-xl font-semibold text-jagt-800 mb-4">
+                                {usp.Title}
+                            </h3>
+                        )}
+
+                        <!-- Description -->
+                        {usp.Description && (
+                            <p class="text-jagt-600 leading-relaxed">
+                                {usp.Description}
+                            </p>
+                        )}
+                    </div>
+                ))}
+            </div>
+        )}
     </div>
 </div>
