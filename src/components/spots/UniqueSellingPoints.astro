@@ -39,7 +39,7 @@ const backgroundClasses = getBackgroundClasses(Configuration?.Background);
         {USPs && USPs.length > 0 && (
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
                 {USPs.map((usp) => (
-                    <div class="bg-white rounded-lg border border-gray-200 p-8 text-center hover:shadow-lg transition-shadow duration-300">
+                    <div class="bg-white rounded-lg border border-jagt-50 p-8 text-center hover:shadow-lg transition-shadow duration-300">
                         <!-- Icon -->
                         {usp.Icon && (
                             <div class="flex justify-center mb-6">
@@ -51,7 +51,7 @@ const backgroundClasses = getBackgroundClasses(Configuration?.Background);
 
                         <!-- Title -->
                         {usp.Title && (
-                            <h3 class="text-xl font-semibold text-jagt-800 mb-4">
+                            <h3 class="text-xl font-semibold text-jagt-600 mb-4">
                                 {usp.Title}
                             </h3>
                         )}

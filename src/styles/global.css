@@ -5,6 +5,7 @@
 @theme {
 
   --color-jagt: #3B5A34;
+  --color-jagt-50: #a0af8d;
   --color-jagt-100: #7a8f59;
   --color-jagt-200: rgb(74, 107, 66);
   --color-jagt-300: rgba(59, 90, 52, 0.95);
@@ -15,7 +16,7 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  --background: oklch(1 0 0);
+  --background: rgb(240, 247, 238);
   --foreground: oklch(0.145 0 0);
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.145 0 0);
