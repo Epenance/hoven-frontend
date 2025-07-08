@@ -40,6 +40,36 @@ export default function MainNav({
         }
     }, [mobileMenuOpen]);
 
+    // Prevent body scroll when mobile menu is open
+    useEffect(() => {
+        if (mobileMenuOpen) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = '';
+        }
+
+        // Cleanup function to restore scroll when component unmounts
+        return () => {
+            document.body.style.overflow = '';
+        };
+    }, [mobileMenuOpen]);
+
+    // Handle window resize to restore scroll when transitioning from mobile to desktop
+    useEffect(() => {
+        const handleResize = () => {
+            // Check if we're on desktop (md breakpoint is 768px in Tailwind)
+            if (window.innerWidth >= 768 && mobileMenuOpen) {
+                document.body.style.overflow = '';
+            }
+        };
+
+        window.addEventListener('resize', handleResize);
+
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        };
+    }, [mobileMenuOpen]);
+
     const handleMouseEnter = (itemTitle: string) => {
         // Clear any existing timeout for this item
         const existingTimeout = timeoutRefs.current.get(itemTitle);
