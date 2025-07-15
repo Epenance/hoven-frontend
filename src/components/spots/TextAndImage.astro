@@ -33,6 +33,11 @@ const backgroundClasses = getBackgroundClasses(Configuration?.Background);
                     }
                 }} />}
             </div>
-            <div class="md:w-1/2 flex flex-col justify-center"><Image  class="rounded-2xl w-full drop-shadow-xl" width={Media.width} height={Media.height} src={CMS_PATH + Media.url} alt={Media.alternativeText ? Media.alternativeText : ""} /></div>
+            <div class="md:w-1/2 flex flex-col justify-center">
+                {Media && Media.url && Media.width && Media.height && (
+                    <Image  class="rounded-2xl w-full drop-shadow-xl" width={Media.width} height={Media.height} src={CMS_PATH + Media.url} alt={Media.alternativeText ? Media.alternativeText : ""} />
+                )}
+            </div>
+        </div>
     </div>
 </div>
