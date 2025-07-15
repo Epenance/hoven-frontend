@@ -20,11 +20,11 @@ const backgroundClasses = getBackgroundClasses(Configuration?.Background);
 <div class={backgroundClasses}>
     <div class="container mx-auto ">
         <div class={`flex flex-col-reverse justify-between ${Reversed ? 'md:flex-row-reverse' : 'md:flex-row'}`}>
-            <div class="md:w-1/2 flex flex-col justify-center md:p-5 py-5 max-w-xl">
+            <div class="md:w-1/2 flex flex-col justify-center md:p-5 py-5 max-w-xl text-jagt-500">
                 {<StrapiBlocks data={Text} theme={{
                     extend: {
                         heading: {
-                            h1: ["font-bold md:text-7xl text-4xl mb-4"],
+                            h1: ["font-bold md:text-5xl text-4xl mb-4"],
                             h2: ["font-bold text-4xl mb-5"]
                         },
                         paragraph: {
@@ -33,7 +33,6 @@ const backgroundClasses = getBackgroundClasses(Configuration?.Background);
                     }
                 }} />}
             </div>
-            <div class="md:w-1/2 flex flex-col justify-center"><Image  class="rounded-2xl w-full" width={Media.width} height={Media.height} src={CMS_PATH + Media.url} alt={Media.alternativeText ? Media.alternativeText : ""} /></div>
-        </div>
+            <div class="md:w-1/2 flex flex-col justify-center"><Image  class="rounded-2xl w-full drop-shadow-xl" width={Media.width} height={Media.height} src={CMS_PATH + Media.url} alt={Media.alternativeText ? Media.alternativeText : ""} /></div>
     </div>
 </div>
