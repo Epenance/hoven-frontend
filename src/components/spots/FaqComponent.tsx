@@ -3,7 +3,7 @@ import { BlocksRenderer, type BlocksContent } from '@strapi/blocks-react-rendere
 
 interface FaqItem {
     Title?: string;
-    Text?: string;
+    Text: BlocksContent;
 }
 
 interface FaqProps {
@@ -32,7 +32,11 @@ const FaqComponent: React.FC<FaqProps> = ({ items = [] }) => {
                         <div key={index} className={`${index !== 0 ? 'border-t border-jagt-50' : ''}`}>
                             <button
                                 onClick={() => toggleItem(index)}
-                                className="w-full px-6 py-5 text-left flex justify-between items-center hover:bg-gray-50 transition-colors duration-200"
+                                className={`w-full px-6 py-5 text-left flex justify-between items-center hover:bg-gray-50 transition-colors duration-200 cursor-pointer ${
+                                    index === 0 ? 'rounded-t-lg' : ''
+                                } ${
+                                    index === items.length - 1 ? 'rounded-b-lg' : ''
+                                }`}
                             >
                                 <span className="font-semibold text-jagt-600 text-lg">
                                     {item.Title}
