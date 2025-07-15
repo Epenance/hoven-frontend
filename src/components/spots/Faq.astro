@@ -1,0 +1,45 @@
+---
+import type {SpotProps} from "./types";
+import {getBackgroundClasses} from "../../lib/background";
+import FaqComponent from "./FaqComponent.tsx";
+import {StrapiBlocks} from "@sensinum/astro-strapi-blocks";
+
+interface FaqItem  {
+    Title?: string;
+    Text?: string;
+}
+
+interface Props extends SpotProps {
+    Text?: any;
+    Items?: FaqItem[];
+}
+
+const { Text, Items, Configuration } = Astro.props as Props;
+const backgroundClasses = getBackgroundClasses(Configuration?.Background);
+
+// Extract title and subtitle from the Text blocks if available
+let title = "";
+
+---
+<div class={backgroundClasses}>
+    <div class="container mx-auto px-4 py-16">
+        <div class="text-center text-jagt">
+            {<StrapiBlocks data={Text} theme={{
+                extend: {
+                    heading: {
+                        h1: ["font-bold md:text-7xl text-4xl mb-4"],
+                        h2: ["font-bold text-4xl mb-5"]
+                    },
+                    paragraph: {
+                        link: ['rounded-sm uppercase font-bold bg-jagt hover:bg-jagt-500 py-4 px-8 text-white inline-block']
+                    }
+                }
+            }} />}
+        </div>
+        <FaqComponent
+            title={title}
+            items={Items}
+            client:load
+        />
+    </div>
+</div>

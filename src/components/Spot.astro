@@ -4,13 +4,15 @@ import TextAndImage from './spots/TextAndImage.astro'
 import CtaBanner from './spots/CtaBanner.astro'
 import UniqueSellingPoints from './spots/UniqueSellingPoints.astro';
 import Fact from './spots/Fact.astro';
+import Faq from './spots/Faq.astro';
 
 type PageContentBlock =
     | { __component: 'spots.hero'; [key: string]: any }
     | { __component: 'spots.cta-banner'; [key: string]: any }
     | { __component: 'spots.text-and-image'; [key: string]: any }
     | { __component: 'spots.unique-selling-points'; [key: string]: any }
-    | { __component: 'spots.fact'; [key: string]: any };
+    | { __component: 'spots.fact'; [key: string]: any }
+    | { __component: 'spots.faq'; [key: string]: any };
 
 export const componentMap = {
     'spots.hero': Hero,
@@ -18,6 +20,7 @@ export const componentMap = {
     'spots.cta-banner': CtaBanner,
     'spots.unique-selling-points': UniqueSellingPoints,
     'spots.fact': Fact,
+    'spots.faq': Faq,
 }
 
 const { spot } = Astro.props as { spot: PageContentBlock };
