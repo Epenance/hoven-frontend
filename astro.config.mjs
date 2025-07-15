@@ -7,7 +7,7 @@ import react from "@astrojs/react";
 // https://astro.build/config
 export default defineConfig({
     image: {
-        domains: ['localhost'],
+        domains: ['localhost', 'hoven-cms-production.up.railway.app'],
     },
     vite: {
       plugins: [tailwindcss()],
