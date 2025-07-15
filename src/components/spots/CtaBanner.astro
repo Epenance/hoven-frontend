@@ -12,7 +12,7 @@ const { Text, Configuration } = Astro.props;
 const backgroundClasses = getBackgroundClasses(Configuration?.Background);
 ---
 <div class={backgroundClasses}>
-    <div class="container mx-auto p-5 md:p-0">
+    <div class="container mx-auto px-4">
         <div class="bg-jagt-100 w-full text-white p-12 rounded-md text-center">
             {<StrapiBlocks data={Text} theme={{
                 extend: {

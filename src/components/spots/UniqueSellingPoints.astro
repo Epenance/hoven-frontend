@@ -12,9 +12,10 @@ interface UspItem  {
 interface Props extends SpotProps {
     Text?: any;
     USPs?: UspItem[];
+    Condensed?: boolean;
 }
 
-const { Text, USPs, Configuration } = Astro.props as Props;
+const { Text, USPs, Configuration, Condensed } = Astro.props as Props;
 const backgroundClasses = getBackgroundClasses(Configuration?.Background);
 ---
 
@@ -37,32 +38,63 @@ const backgroundClasses = getBackgroundClasses(Configuration?.Background);
 
         <!-- USP Cards Grid -->
         {USPs && USPs.length > 0 && (
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+            <div class={`grid grid-cols-1 ${Condensed ? 'md:grid-cols-2 lg:grid-cols-3' : 'md:grid-cols-2 lg:grid-cols-3'} gap-6 max-w-6xl mx-auto`}>
                 {USPs.map((usp) => (
-                    <div class="bg-white rounded-lg border border-jagt-50 p-8 text-center hover:shadow-lg transition-shadow duration-300">
-                        <!-- Icon -->
-                        {usp.Icon && (
-                            <div class="flex justify-center mb-6">
-                                <div class="w-16 h-16 flex items-center justify-center">
-                                    <i class={`far text-6xl fa-${usp.Icon} text-4xl text-jagt-600`}></i>
+                    Condensed ? (
+                        <!-- Condensed Layout -->
+                        <div class="bg-white rounded-lg border border-jagt-50 p-6 hover:shadow-md transition-shadow duration-300">
+                            <div class="flex items-start gap-4">
+                                <!-- Icon -->
+                                {usp.Icon && (
+                                    <div class="flex-shrink-0">
+                                        <div class="w-12 h-12 rounded-full bg-jagt-50 flex items-center justify-center">
+                                            <i class={`far fa-${usp.Icon} text-xl text-jagt-600`}></i>
+                                        </div>
+                                    </div>
+                                )}
+                                
+                                <!-- Content -->
+                                <div class="flex-1 min-w-0">
+                                    {usp.Title && (
+                                        <h3 class="text-lg font-semibold text-jagt-600 mb-2">
+                                            {usp.Title}
+                                        </h3>
+                                    )}
+                                    {usp.Description && (
+                                        <p class="text-jagt-600 text-sm leading-relaxed">
+                                            {usp.Description}
+                                        </p>
+                                    )}
                                 </div>
                             </div>
-                        )}
+                        </div>
+                    ) : (
+                        <!-- Standard Layout -->
+                        <div class="bg-white rounded-lg border border-jagt-50 p-8 text-center hover:shadow-lg transition-shadow duration-300">
+                            <!-- Icon -->
+                            {usp.Icon && (
+                                <div class="flex justify-center mb-6">
+                                    <div class="w-16 h-16 flex items-center justify-center">
+                                        <i class={`far text-6xl fa-${usp.Icon} text-4xl text-jagt-600`}></i>
+                                    </div>
+                                </div>
+                            )}
 
-                        <!-- Title -->
-                        {usp.Title && (
-                            <h3 class="text-xl font-semibold text-jagt-600 mb-4">
-                                {usp.Title}
-                            </h3>
-                        )}
+                            <!-- Title -->
+                            {usp.Title && (
+                                <h3 class="text-xl font-semibold text-jagt-600 mb-4">
+                                    {usp.Title}
+                                </h3>
+                            )}
 
-                        <!-- Description -->
-                        {usp.Description && (
-                            <p class="text-jagt-600 leading-relaxed">
-                                {usp.Description}
-                            </p>
-                        )}
-                    </div>
+                            <!-- Description -->
+                            {usp.Description && (
+                                <p class="text-jagt-600 leading-relaxed">
+                                    {usp.Description}
+                                </p>
+                            )}
+                        </div>
+                    )
                 ))}
             </div>
         )}
