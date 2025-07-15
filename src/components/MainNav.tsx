@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect } from 'react';
 
-interface MenuItem {
+export interface MenuItem {
     title: string;
     description?: string;
     href: string; // Made required since all menu items will have href

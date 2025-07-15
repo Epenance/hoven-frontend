@@ -1,16 +1,16 @@
 ---
-import MainNav from "../components/MainNav";
+import MainNav, { type MenuItem } from "../components/MainNav";
 import logo from '../assets/logo.png';
 import Footer from "../components/Footer.astro";
 import { strapiClient } from "../clients/strapi";
 
 // Type definitions for Strapi menu data
-interface StrapiMenuItem {
+export interface StrapiMenuItem {
 	id: number;
 	documentId: string;
 	title: string;
 	description?: string;
-	href?: string;
+	href: string;
 	order: number;
 	isActive: boolean;
 	createdAt: string;
@@ -18,13 +18,6 @@ interface StrapiMenuItem {
 	publishedAt: string;
 	parent?: StrapiMenuItem | null;
 	children: StrapiMenuItem[];
-}
-
-interface MenuItem {
-	title: string;
-	description?: string;
-	href?: string;
-	children?: MenuItem[];
 }
 
 const collection = strapiClient.collection('menus')
