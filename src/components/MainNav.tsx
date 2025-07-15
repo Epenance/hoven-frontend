@@ -127,14 +127,14 @@ export default function MainNav({
                     <a
                         href={item.href}
                         className={`
-                            flex items-center px-4 py-2 text-sm
+                            flex items-center px-4 py-2 text-sm font-medium 
                             ${level > 0 
                                 ? (itemIsActive 
-                                    ? 'text-primary font-medium' 
+                                    ? 'text-primary font-medium'
                                     : 'text-jagt-300 hover:text-primary'
                                   )
                                 : (itemIsActive 
-                                    ? 'text-white font-medium' 
+                                    ? 'text-white font-medium underline underline-offset-3' 
                                     : 'text-white hover:text-primary'
                                   )
                             }
