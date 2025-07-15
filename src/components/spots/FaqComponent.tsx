@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { BlocksRenderer, type BlocksContent } from '@strapi/blocks-react-renderer';
 
 interface FaqItem {
     Title?: string;
@@ -6,12 +7,10 @@ interface FaqItem {
 }
 
 interface FaqProps {
-    title?: string;
-    subtitle?: string;
     items?: FaqItem[];
 }
 
-const FaqComponent: React.FC<FaqProps> = ({ title, subtitle, items = [] }) => {
+const FaqComponent: React.FC<FaqProps> = ({ items = [] }) => {
     const [openItems, setOpenItems] = useState<Set<number>>(new Set());
 
     const toggleItem = (index: number) => {
@@ -46,7 +45,7 @@ const FaqComponent: React.FC<FaqProps> = ({ title, subtitle, items = [] }) => {
                             {openItems.has(index) && (
                                 <div className="px-6 pb-5">
                                     <div className="text-jagt-600 leading-relaxed">
-                                        {item.Text}
+                                        { <BlocksRenderer content={item.Text} />}
                                     </div>
                                 </div>
                             )}
