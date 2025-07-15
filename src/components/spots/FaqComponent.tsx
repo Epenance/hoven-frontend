@@ -63,7 +63,7 @@ const FaqComponent: React.FC<FaqProps> = ({ items = [] }) => {
                                 }}
                             >
                                 <div
-                                    ref={(el) => (contentRefs.current[index] = el)}
+                                    ref={(el) => { contentRefs.current[index] = el; }}
                                     className={`px-6 pb-5 ${index === items.length - 1 ? 'rounded-b-lg' : ''}`}
                                 >
                                     <div className="text-jagt-600 leading-relaxed">
