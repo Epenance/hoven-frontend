@@ -10,6 +10,9 @@
   },
   "dependencies": {
     "@astrojs/react": "^4.2.1",
+    "@fullcalendar/core": "^6.1.18",
+    "@fullcalendar/daygrid": "^6.1.18",
+    "@fullcalendar/react": "^6.1.18",
     "@radix-ui/react-navigation-menu": "^1.2.5",
     "@sensinum/astro-strapi-blocks": "^1.2.3",
     "@strapi/blocks-react-renderer": "^1.0.2",
