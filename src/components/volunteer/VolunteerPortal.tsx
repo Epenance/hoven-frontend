@@ -24,25 +24,54 @@ export default function VolunteerPortal() {
         const currentYear = new Date().getFullYear();
         const startOfYear = new Date(currentYear, 0, 1).toISOString(); // January 1st of current year
 
-        collect.find({
-            populate: '*',
-            filters: {
-                Date: { $gte: startOfYear },
-            },
-        }).then((response) => {
-            const mappedEvents: Event[] = [];
-            const {data} = response
+        const fetchAllShifts = async () => {
+            const allShifts: any[] = [];
+            let page = 1;
+            let hasMoreData = true;
+            const pageSize = 100; // Increase page size for better performance
 
-            data.map((shift: any) => {
-                shift.volunteers.map((volunteer: RawVolunteer) => {
+            while (hasMoreData) {
+                try {
+                    const response = await collect.find({
+                        populate: '*',
+                        filters: {
+                            Date: { $gte: startOfYear },
+                        },
+                        pagination: {
+                            page: page,
+                            pageSize: pageSize
+                        }
+                    });
+
+                    const { data, meta } = response;
+                    allShifts.push(...data);
+
+                    // Check if we have more pages
+                    const { pagination } = meta;
+                    hasMoreData = page < pagination.pageCount;
+                    page++;
+
+                } catch (error) {
+                    console.error('Error fetching shifts:', error);
+                    hasMoreData = false;
+                }
+            }
+
+            // Map all shifts to events
+            const mappedEvents: Event[] = [];
+            allShifts.forEach((shift: any) => {
+                shift.volunteers.forEach((volunteer: RawVolunteer) => {
                     mappedEvents.push({
-                        title: `Vagt: ${volunteer.Name} ${volunteer.Instructor ? '(Instruktør)' : ''}` ,
+                        title: `Vagt: ${volunteer.Name} ${volunteer.Instructor ? '(Instruktør)' : ''}`,
                         start: shift.Date
-                    })
-                })
-            })
-            setEvents(mappedEvents)
-        })
+                    });
+                });
+            });
+
+            setEvents(mappedEvents);
+        };
+
+        fetchAllShifts();
     }, [])
 
     const handleListViewClick = () => {
