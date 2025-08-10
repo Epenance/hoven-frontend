@@ -126,7 +126,12 @@ const seoImage = await getImage({
 	quality: 80,
 })
 
-finalSeo.Image.url = seoImage.src
+const site = Astro.site ? Astro.site.toString() : '';
+
+// Ensure proper URL concatenation without double slashes
+const siteUrl = site.endsWith('/') ? site.slice(0, -1) : site;
+const imagePath = seoImage.src.startsWith('/') ? seoImage.src : '/' + seoImage.src;
+finalSeo.Image.url = siteUrl + imagePath
 
 console.log({seoImage})
 ---
