@@ -1,5 +1,6 @@
 ---
 import MainNav, { type MenuItem } from "../components/MainNav";
+import { getImage } from "astro:assets";
 import logo from '../assets/logo-white.png';
 import colorLogo from '../assets/logo.png';
 import Footer from "../components/Footer.astro";
@@ -114,6 +115,20 @@ const finalSeo = {
 		height: seo?.Image?.height || defaultSeo.Image?.height || colorLogo.height
 	}
 };
+
+const CMS_PATH = import.meta.env.PUBLIC_CMS_PATH
+
+const seoImage = await getImage({
+	src: colorLogo.src === finalSeo.Image.url ? finalSeo.Image.url : CMS_PATH + finalSeo.Image.url,
+	width: finalSeo.Image.width,
+	height: finalSeo.Image.height,
+	format: 'webp',
+	quality: 80,
+})
+
+finalSeo.Image.url = seoImage.src
+
+console.log({seoImage})
 ---
 <!doctype html>
 <html lang="en">
