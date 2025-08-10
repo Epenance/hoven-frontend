@@ -32,23 +32,24 @@ export async function getStaticPaths() {
                     }
                 },
             },
+            SEO: {
+                populate: '*',
+            },
         }
     });
 
-    return strapiPages.data.map(({ Slug, Title, Content }) => {
+    return strapiPages.data.map(({ Slug, Title, Content, SEO }) => {
         return {
             params: { slug: Slug },
-            props: { title: Title, content: Content },
+            props: { title: Title, content: Content, seo: SEO },
         };
     });
 }
 
-const { title, content } = Astro.props;
-
-console.log(content)
+const { title, content, seo } = Astro.props;
 ---
 
-<Layout title={title}>
+<Layout title={title} seo={seo}>
     <div class="spots">
         {content.map((spot: any, idx: number) => (
             <Spot spot={spot} key={idx} />

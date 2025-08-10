@@ -1,8 +1,10 @@
 ---
 import MainNav, { type MenuItem } from "../components/MainNav";
 import logo from '../assets/logo-white.png';
+import colorLogo from '../assets/logo.png';
 import Footer from "../components/Footer.astro";
 import { strapiClient } from "../clients/strapi";
+import { SEO } from "astro-seo";
 
 // Type definitions for Strapi menu data
 export interface StrapiMenuItem {
@@ -19,6 +21,28 @@ export interface StrapiMenuItem {
 	parent?: StrapiMenuItem | null;
 	children: StrapiMenuItem[];
 }
+
+const seoResource = strapiClient.single('seo', );
+
+const seoData = await seoResource.find({
+	populate: {
+		Image: {
+			populate: '*'
+		}
+	}
+});
+
+const defaultSeo = {
+	TitleTemplate: '',
+	Description: '',
+	Image: {
+		url: '',
+		alternativeText: '',
+		width: 0,
+		height: 0
+	},
+	...seoData.data
+};
 
 const collection = strapiClient.collection('menus')
 
@@ -60,7 +84,36 @@ const transformMenuData = (items: StrapiMenuItem[]): MenuItem[] => {
 
 const menu = transformMenuData(menuItems.data as StrapiMenuItem[]);
 
-const { title } = Astro.props;
+interface Props {
+	title: string;
+	seo?: {
+		Title?: string;
+		Description?: string;
+		NoIndex?: boolean;
+		Image?: {
+			url: string;
+			alternativeText?: string;
+			width?: number;
+			height?: number;
+		};
+	};
+}
+
+const { title, seo } = Astro.props;
+
+// Merge provided SEO props with default SEO values
+const finalSeo = {
+	TitleTemplate: defaultSeo.TitleTemplate || '%s | Hoven Jagtforening',
+	Title: seo?.Title || title,
+	Description: seo?.Description || defaultSeo.Description || '',
+	NoIndex: seo?.NoIndex || false,
+	Image: {
+		url: seo?.Image?.url || defaultSeo.Image?.url || colorLogo.src,
+		alternativeText: seo?.Image?.alternativeText || defaultSeo.Image?.alternativeText || 'Hoven Jagtforening',
+		width: seo?.Image?.width || defaultSeo.Image?.width || colorLogo.width,
+		height: seo?.Image?.height || defaultSeo.Image?.height || colorLogo.height
+	}
+};
 ---
 <!doctype html>
 <html lang="en">
@@ -72,7 +125,25 @@ const { title } = Astro.props;
 		<link rel="stylesheet" href="/css/regular.min.css" />
 		<link rel="stylesheet" href="/css/solid.min.css" />
 		<meta name="generator" content={Astro.generator} />
-		<title>{title} | Hoven Jagtforening</title>
+		<title>{finalSeo.Title}</title>
+		<SEO
+			titleTemplate={finalSeo.TitleTemplate}
+			title={finalSeo.Title}
+			description={finalSeo.Description}
+			noindex={finalSeo.NoIndex}
+			openGraph={{
+				basic: {
+					title: finalSeo.Title,
+					type: "website",
+					image: finalSeo.Image.url,
+				},
+				image: {
+					alt: finalSeo.Image.alternativeText,
+					width: finalSeo.Image.width,
+					height: finalSeo.Image.height,
+				}
+			}}
+		/>
 	</head>
 	<body class="p-[113px_0_0]">
 		<div class="fixed top-0 left-0 w-full bg-jagt-300 h-[113px] z-50">
