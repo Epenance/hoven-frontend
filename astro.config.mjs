@@ -5,6 +5,7 @@ import { loadEnv } from "vite";
 
 import react from "@astrojs/react";
 
+// @ts-ignore
 const {SITE_URL, CMS_DOMAIN} = loadEnv(process.env.NODE_ENV, process.cwd(), "");
 
 console.log('SITE_URL', SITE_URL)
