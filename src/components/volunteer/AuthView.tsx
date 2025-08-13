@@ -2,11 +2,7 @@ import { useState } from 'react';
 import LoginView from "@/components/volunteer/LoginView.tsx";
 import RegisterView from "@/components/volunteer/RegisterView.tsx";
 
-interface LoginProps {
-    onLogin: () => void;
-}
-
-export const AuthView = ({ onLogin }: LoginProps) => {
+export const AuthView = () => {
     const [currentScreen, setCurrentScreen] = useState<'login' | 'createUser' | 'forgotPassword'>('login');
 
     const handleRegisterButtonClick = () => {
@@ -25,14 +21,14 @@ export const AuthView = ({ onLogin }: LoginProps) => {
                         Frivillig Portal
                     </h2>
                     {currentScreen === 'login' ? (<p className="mt-2 text-center text-sm text-gray-600">
-                        Indtast adgangskode for at fortsætte
+                        Indtast email og adgangskode for at fortsætte
                     </p>) : null}
                     {currentScreen === 'createUser' ? (<p className="mt-2 text-center text-sm text-gray-600">
                         Indtast dine informationer for at oprette en ny bruger
                     </p>) : null}
                 </div>
                 {currentScreen === 'login' ? (
-                    <LoginView onLogin={onLogin} onRegister={handleRegisterButtonClick} />
+                    <LoginView onRegister={handleRegisterButtonClick} />
                 ) : null}
                 {currentScreen === 'createUser' ? (
                     <RegisterView onBack={handleBackButtonClick}  />
