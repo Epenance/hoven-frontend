@@ -3,7 +3,7 @@ export interface Event {
     start: string;
 }
 
-interface RawVolunteer {
+export interface RawVolunteer {
     Name: string,
     Instructor?: boolean
     Email?: string
