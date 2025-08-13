@@ -1,17 +1,18 @@
 import { useState } from 'react';
 import { loginUser } from '../../clients/strapi';
+import { useAuth } from '../../hooks/useAuth';
 import type { LoginData } from '../../clients/strapi';
 
 interface LoginViewProps {
-    onLogin: () => void;
     onRegister: () => void;
 }
 
-export const LoginView = ({onLogin, onRegister}: LoginViewProps) => {
+export const LoginView = ({ onRegister }: LoginViewProps) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const [isLoading, setIsLoading] = useState(false);
+    const { login } = useAuth();
 
     const validateForm = (): string | null => {
         if (!email.trim()) {
@@ -48,7 +49,9 @@ export const LoginView = ({onLogin, onRegister}: LoginViewProps) => {
             const result = await loginUser(loginData);
 
             if (result.success) {
-                onLogin();
+                // Update the auth state using the hook - this will automatically trigger re-renders
+                login(result.data.user, result.data.jwt);
+                // No need to call onLogin() - useAuth hook handles state management
             } else {
                 setError(result.error || 'Forkert email eller adgangskode');
                 setPassword(''); // Clear password on failed login

@@ -4,48 +4,26 @@ import {ListView} from "@/components/volunteer/ListView.tsx";
 import type {Event, RawVolunteer} from "@/components/volunteer/types.ts";
 import {CalendarView} from "@/components/volunteer/CalendarView.tsx";
 import AuthView from "@/components/volunteer/AuthView.tsx";
+import {useAuth} from "@/hooks/useAuth.ts";
 
-const VOLUNTEER_API_KEY = import.meta.env.PUBLIC_VOLUNTEER_API_KEY;
 const CMS_PATH = import.meta.env.PUBLIC_CMS_PATH;
-
-
-export const strapiClient = strapi({
-    baseURL: `${CMS_PATH}/api`,
-    auth: VOLUNTEER_API_KEY
-});
-
 
 export default function VolunteerPortal() {
     const [listViewActive, setListViewActive] = useState<boolean>(false)
     const [events, setEvents] = useState<Event[]>([])
-    const [loggedIn, setLoggedIn] = useState<boolean>(false)
-
-    // Check for existing login session on component mount
-    useEffect(() => {
-        const loginData = localStorage.getItem('volunteer_login');
-        if (loginData) {
-            try {
-                const { timestamp } = JSON.parse(loginData);
-                const now = new Date().getTime();
-                const thirtyDaysInMs = 30 * 24 * 60 * 60 * 1000; // 30 days in milliseconds
-
-                // Check if the session is still valid (within 30 days)
-                if (now - timestamp < thirtyDaysInMs) {
-                    setLoggedIn(true);
-                } else {
-                    // Session expired, remove it
-                    localStorage.removeItem('volunteer_login');
-                }
-            } catch (error) {
-                // Invalid data in localStorage, remove it
-                localStorage.removeItem('volunteer_login');
-            }
-        }
-    }, []);
+    const { isLoggedIn, user, isLoading, logout, getAuthToken } = useAuth();
 
     useEffect(() => {
         // Only fetch shifts if logged in
-        if (!loggedIn) return;
+        if (!isLoggedIn) return;
+
+        const jwt = getAuthToken();
+        if (!jwt) return;
+
+        const strapiClient = strapi({
+            baseURL: `${CMS_PATH}/api`,
+            auth: jwt
+        });
 
         const collect = strapiClient.collection('shifts')
 
@@ -102,25 +80,54 @@ export default function VolunteerPortal() {
         };
 
         fetchAllShifts();
-    }, [loggedIn])
+    }, [isLoggedIn])
 
     const handleListViewClick = () => {
         setListViewActive(true)
     }
 
-    const handleLogin = () => {
-        // Store login session with timestamp
-        const loginData = {
-            timestamp: new Date().getTime(),
-            loggedIn: true
-        };
-        localStorage.setItem('volunteer_login', JSON.stringify(loginData));
-        setLoggedIn(true);
+    const handleLogout = () => {
+        logout();
+        setListViewActive(false); // Reset view state on logout
+    }
+
+    // Show loading spinner while checking authentication
+    if (isLoading) {
+        return (
+            <div className="flex justify-center items-center min-h-screen">
+                <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-jagt-600"></div>
+            </div>
+        );
     }
 
     return (
         <div>
-            {!loggedIn ? <AuthView onLogin={handleLogin} /> : (!listViewActive ? (<CalendarView events={events} onListViewClick={handleListViewClick} />) : (<ListView onBackToCalendar={() => setListViewActive(false)} events={events} />))}
+            {!isLoggedIn ? (
+                <AuthView />
+            ) : (
+                <div>
+                    {/* User info and logout button */}
+                    {user && (
+                        <div className="flex justify-between items-center p-4 bg-gray-50 border-b">
+                            <span className="text-sm text-gray-600">
+                                Logget ind som: {user.firstname} {user.surname} ({user.email})
+                            </span>
+                            <button
+                                onClick={handleLogout}
+                                className="px-3 py-1 text-sm bg-red-600 text-white rounded hover:bg-red-700"
+                            >
+                                Log ud
+                            </button>
+                        </div>
+                    )}
+
+                    {!listViewActive ? (
+                        <CalendarView events={events} onListViewClick={handleListViewClick} />
+                    ) : (
+                        <ListView onBackToCalendar={() => setListViewActive(false)} events={events} />
+                    )}
+                </div>
+            )}
         </div>
     )
 }
