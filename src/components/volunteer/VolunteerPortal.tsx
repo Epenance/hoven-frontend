@@ -3,7 +3,7 @@ import {strapi} from "@strapi/client";
 import {ListView} from "@/components/volunteer/ListView.tsx";
 import type {Event, RawVolunteer} from "@/components/volunteer/types.ts";
 import {CalendarView} from "@/components/volunteer/CalendarView.tsx";
-import Login from "@/components/volunteer/Login.tsx";
+import AuthView from "@/components/volunteer/AuthView.tsx";
 
 const VOLUNTEER_API_KEY = import.meta.env.PUBLIC_VOLUNTEER_API_KEY;
 const CMS_PATH = import.meta.env.PUBLIC_CMS_PATH;
@@ -22,29 +22,25 @@ export default function VolunteerPortal() {
 
     // Check for existing login session on component mount
     useEffect(() => {
-        const checkLoginSession = () => {
-            const loginData = localStorage.getItem('volunteer_login');
-            if (loginData) {
-                try {
-                    const { timestamp } = JSON.parse(loginData);
-                    const now = new Date().getTime();
-                    const thirtyDaysInMs = 30 * 24 * 60 * 60 * 1000; // 30 days in milliseconds
+        const loginData = localStorage.getItem('volunteer_login');
+        if (loginData) {
+            try {
+                const { timestamp } = JSON.parse(loginData);
+                const now = new Date().getTime();
+                const thirtyDaysInMs = 30 * 24 * 60 * 60 * 1000; // 30 days in milliseconds
 
-                    // Check if the session is still valid (within 30 days)
-                    if (now - timestamp < thirtyDaysInMs) {
-                        setLoggedIn(true);
-                    } else {
-                        // Session expired, remove it
-                        localStorage.removeItem('volunteer_login');
-                    }
-                } catch (error) {
-                    // Invalid data in localStorage, remove it
+                // Check if the session is still valid (within 30 days)
+                if (now - timestamp < thirtyDaysInMs) {
+                    setLoggedIn(true);
+                } else {
+                    // Session expired, remove it
                     localStorage.removeItem('volunteer_login');
                 }
+            } catch (error) {
+                // Invalid data in localStorage, remove it
+                localStorage.removeItem('volunteer_login');
             }
-        };
-
-        checkLoginSession();
+        }
     }, []);
 
     useEffect(() => {
@@ -81,9 +77,10 @@ export default function VolunteerPortal() {
 
                     // Check if we have more pages
                     const { pagination } = meta;
-                    hasMoreData = page < pagination.pageCount;
-                    page++;
-
+                    if (pagination) {
+                        hasMoreData = page < pagination.pageCount;
+                        page++;
+                    }
                 } catch (error) {
                     console.error('Error fetching shifts:', error);
                     hasMoreData = false;
@@ -123,7 +120,7 @@ export default function VolunteerPortal() {
 
     return (
         <div>
-            {!loggedIn ? <Login onLogin={handleLogin} /> : (!listViewActive ? (<CalendarView events={events} onListViewClick={handleListViewClick} />) : (<ListView onBackToCalendar={() => setListViewActive(false)} events={events} />))}
+            {!loggedIn ? <AuthView onLogin={handleLogin} /> : (!listViewActive ? (<CalendarView events={events} onListViewClick={handleListViewClick} />) : (<ListView onBackToCalendar={() => setListViewActive(false)} events={events} />))}
         </div>
     )
 }
