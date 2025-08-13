@@ -33,8 +33,6 @@ export const registerUser = async (userData: RegisterData) => {
                 password: userData.password,
                 firstname: userData.firstname,
                 surname: userData.surname,
-                confirmed: false, // User needs admin approval
-                blocked: false
             }),
         });
 
