@@ -24,14 +24,20 @@ export interface StrapiMenuItem {
 }
 
 const seoResource = strapiClient.single('seo', );
-
-const seoData = await seoResource.find({
+let seoData = {
+	data: {}
+}
+try {
+seoData = await seoResource.find({
 	populate: {
 		Image: {
 			populate: '*'
 		}
 	}
 });
+} catch (e) {
+	console.error('Error fetching SEO data:', e);
+}
 
 const defaultSeo = {
 	TitleTemplate: '',
@@ -109,7 +115,7 @@ const finalSeo = {
 	Description: seo?.Description || defaultSeo.Description || '',
 	NoIndex: seo?.NoIndex || false,
 	Image: {
-		url: seo?.Image?.url || defaultSeo.Image?.url || colorLogo.src,
+		url: seo?.Image?.url || defaultSeo.Image?.url || colorLogo,
 		alternativeText: seo?.Image?.alternativeText || defaultSeo.Image?.alternativeText || 'Hoven Jagtforening',
 		width: seo?.Image?.width || defaultSeo.Image?.width || colorLogo.width,
 		height: seo?.Image?.height || defaultSeo.Image?.height || colorLogo.height
