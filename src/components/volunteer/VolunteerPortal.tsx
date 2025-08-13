@@ -4,11 +4,11 @@ import {ListView} from "@/components/volunteer/ListView.tsx";
 import type {Event, RawVolunteer} from "@/components/volunteer/types.ts";
 import {CalendarView} from "@/components/volunteer/CalendarView.tsx";
 import AuthView from "@/components/volunteer/AuthView.tsx";
-import {useAuth} from "@/hooks/useAuth.ts";
+import {useAuth, AuthProvider} from "@/hooks/useAuth.ts";
 
 const CMS_PATH = import.meta.env.PUBLIC_CMS_PATH;
 
-export default function VolunteerPortal() {
+function VolunteerPortalContent() {
     const [listViewActive, setListViewActive] = useState<boolean>(false)
     const [events, setEvents] = useState<Event[]>([])
     const { isLoggedIn, user, isLoading, logout, getAuthToken } = useAuth();
@@ -130,4 +130,12 @@ export default function VolunteerPortal() {
             )}
         </div>
     )
+}
+
+export default function VolunteerPortal() {
+    return (
+        <AuthProvider>
+            <VolunteerPortalContent />
+        </AuthProvider>
+    );
 }
