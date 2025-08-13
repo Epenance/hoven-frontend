@@ -12,6 +12,7 @@ function VolunteerPortalContent() {
     const [listViewActive, setListViewActive] = useState<boolean>(false)
     const [events, setEvents] = useState<Event[]>([])
     const { isLoggedIn, user, isLoading, logout, getAuthToken } = useAuth();
+    const [needsApproval, setNeedsApproval] = useState<boolean>(false);
 
     useEffect(() => {
         // Only fetch shifts if logged in
@@ -48,7 +49,7 @@ function VolunteerPortalContent() {
                             page: page,
                             pageSize: pageSize
                         }
-                    });
+                    })
 
                     const { data, meta } = response;
                     allShifts.push(...data);
@@ -60,7 +61,21 @@ function VolunteerPortalContent() {
                         page++;
                     }
                 } catch (error) {
+                    console.log(error)
                     console.error('Error fetching shifts:', error);
+
+                    // Check if it's a 403 Forbidden error
+                    if (error instanceof Error) {
+                        // Check for status code in different possible locations
+                        const statusCode = (error as any).status || (error as any).statusCode || (error as any).response?.status;
+
+                        if (statusCode === 403) {
+                            console.log('403 Forbidden - User not authorized to access shifts');
+                            setNeedsApproval(true)
+                            break; // Exit the loop
+                        }
+                    }
+
                     hasMoreData = false;
                 }
             }

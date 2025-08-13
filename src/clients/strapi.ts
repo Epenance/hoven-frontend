@@ -22,7 +22,7 @@ export interface LoginData {
 
 export const registerUser = async (userData: RegisterData) => {
     try {
-        const response = await fetch(`${CMS_PATH}/api/auth/local/register`, {
+        const response = await fetch(`${CMS_PATH}/api/custom-auth/register`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
