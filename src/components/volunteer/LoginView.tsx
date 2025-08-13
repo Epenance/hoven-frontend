@@ -1,50 +1,102 @@
 import { useState } from 'react';
-const VOLUNTEER_PASSWORD = import.meta.env.PUBLIC_VOLUNTEER_PASSWORD;
+import { loginUser } from '../../clients/strapi';
+import type { LoginData } from '../../clients/strapi';
 
 interface LoginViewProps {
     onLogin: () => void;
     onRegister: () => void;
 }
+
 export const LoginView = ({onLogin, onRegister}: LoginViewProps) => {
+    const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const [isLoading, setIsLoading] = useState(false);
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const validateForm = (): string | null => {
+        if (!email.trim()) {
+            return 'Email er påkrævet';
+        }
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+            return 'Indtast en gyldig email adresse';
+        }
+        if (!password) {
+            return 'Adgangskode er påkrævet';
+        }
+        return null;
+    };
+
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        setIsLoading(true);
         setError('');
 
-        // Simulate a small delay for better UX
-        setTimeout(() => {
-            if (password === VOLUNTEER_PASSWORD) {
+        const validationError = validateForm();
+        if (validationError) {
+            setError(validationError);
+            return;
+        }
+
+        setIsLoading(true);
+
+        try {
+            const loginData: LoginData = {
+                email: email.trim().toLowerCase(),
+                password
+            };
+
+            const result = await loginUser(loginData);
+
+            if (result.success) {
                 onLogin();
             } else {
-                setError('Forkert adgangskode');
-                setPassword('');
+                setError(result.error || 'Forkert email eller adgangskode');
+                setPassword(''); // Clear password on failed login
             }
+        } catch (error) {
+            setError('Der opstod en uventet fejl. Prøv igen senere.');
+        } finally {
             setIsLoading(false);
-        }, 500);
+        }
     };
 
     return (
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
-            <div>
-                <label htmlFor="password" className="sr-only">
-                    Adgangskode
-                </label>
-                <input
-                    id="password"
-                    name="password"
-                    type="password"
-                    autoComplete="current-password"
-                    required
-                    className="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-jagt-500 focus:border-jagt-500 focus:z-10 sm:text-sm"
-                    placeholder="Adgangskode"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    disabled={isLoading}
-                />
+            <div className="space-y-4">
+                <div>
+                    <label htmlFor="email" className="sr-only">
+                        Email
+                    </label>
+                    <input
+                        id="email"
+                        name="email"
+                        type="email"
+                        autoComplete="email"
+                        required
+                        className="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-jagt-500 focus:border-jagt-500 focus:z-10 sm:text-sm"
+                        placeholder="Email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        disabled={isLoading}
+                    />
+                </div>
+                <div>
+                    <label htmlFor="password" className="sr-only">
+                        Adgangskode
+                    </label>
+                    <input
+                        id="password"
+                        name="password"
+                        type="password"
+                        autoComplete="current-password"
+                        required
+                        className="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-jagt-500 focus:border-jagt-500 focus:z-10 sm:text-sm"
+                        placeholder="Adgangskode"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        disabled={isLoading}
+                    />
+                </div>
             </div>
 
             {error && (
@@ -58,7 +110,7 @@ export const LoginView = ({onLogin, onRegister}: LoginViewProps) => {
             <div>
                 <button
                     type="submit"
-                    disabled={isLoading || !password}
+                    disabled={isLoading || !email || !password}
                     className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-jagt-600 hover:bg-jagt-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-jagt-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
                 >
                     {isLoading ? (
@@ -74,10 +126,12 @@ export const LoginView = ({onLogin, onRegister}: LoginViewProps) => {
                     disabled={isLoading}
                     onClick={onRegister}
                     className="mt-2 cursor-pointer group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-jagt-600 hover:bg-jagt-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-jagt-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
-                >Opret bruger</button>
+                >
+                    Opret bruger
+                </button>
             </div>
         </form>
-    )
-}
+    );
+};
 
-export default LoginView
+export default LoginView;
