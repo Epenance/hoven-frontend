@@ -11,8 +11,8 @@ const CMS_PATH = import.meta.env.PUBLIC_CMS_PATH;
 function VolunteerPortalContent() {
     const [listViewActive, setListViewActive] = useState<boolean>(false)
     const [events, setEvents] = useState<Event[]>([])
+    const [needsApproval, setNeedsApproval] = useState<boolean>(false)
     const { isLoggedIn, user, isLoading, logout, getAuthToken } = useAuth();
-    const [needsApproval, setNeedsApproval] = useState<boolean>(false);
 
     useEffect(() => {
         // Only fetch shifts if logged in
@@ -103,6 +103,7 @@ function VolunteerPortalContent() {
 
     const handleLogout = () => {
         logout();
+        setNeedsApproval(false) // Reset approval state on logout
         setListViewActive(false); // Reset view state on logout
     }
 
@@ -136,10 +137,46 @@ function VolunteerPortalContent() {
                         </div>
                     )}
 
-                    {!listViewActive ? (
-                        <CalendarView events={events} onListViewClick={handleListViewClick} />
+                    {needsApproval ? (
+                        <div className="flex items-center justify-center bg-gray-50">
+                            <div className="max-w-md w-full mx-auto p-6">
+                                <div className="bg-white rounded-lg shadow-md p-8 text-center">
+                                    <div className="mb-6">
+                                        <div className="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-yellow-100">
+                                            <svg className="h-6 w-6 text-yellow-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z" />
+                                            </svg>
+                                        </div>
+                                    </div>
+                                    <h3 className="text-lg font-medium text-gray-900 mb-2">
+                                        Afventer godkendelse
+                                    </h3>
+                                    <p className="text-sm text-gray-600 mb-6">
+                                        Din bruger skal godkendes af en administrator før du kan få adgang til vagtplanen.
+                                        Du vil få besked når din bruger er blevet aktiveret.
+                                    </p>
+                                    <div className="space-y-3">
+                                        <p className="text-xs text-gray-500">
+                                            Hvis du har spørgsmål, kan du kontakte en administrator.
+                                        </p>
+                                        <button
+                                            onClick={handleLogout}
+                                            className="w-full cursor-pointer flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-jagt-500"
+                                        >
+                                            Log ud
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     ) : (
-                        <ListView onBackToCalendar={() => setListViewActive(false)} events={events} />
+                        <>
+                            {!listViewActive ? (
+                                <CalendarView events={events} onListViewClick={handleListViewClick} />
+                            ) : (
+                                <ListView onBackToCalendar={() => setListViewActive(false)} events={events} />
+                            )}
+                        </>
                     )}
                 </div>
             )}
