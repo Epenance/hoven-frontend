@@ -9,20 +9,12 @@ interface RegisterViewProps {
 export const RegisterView = ({onBack}: RegisterViewProps) => {
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
-    const [firstname, setFirstname] = useState('');
-    const [surname, setSurname] = useState('');
     const [email, setEmail] = useState('');
     const [error, setError] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const [isRegistered, setIsRegistered] = useState(false);
 
     const validateForm = (): string | null => {
-        if (!firstname.trim()) {
-            return 'Fornavn er påkrævet';
-        }
-        if (!surname.trim()) {
-            return 'Efternavn er påkrævet';
-        }
         if (!email.trim()) {
             return 'Email er påkrævet';
         }
@@ -56,8 +48,6 @@ export const RegisterView = ({onBack}: RegisterViewProps) => {
 
         try {
             const userData: RegisterData = {
-                firstname: firstname.trim(),
-                surname: surname.trim(),
                 email: email.trim().toLowerCase(),
                 password
             };
@@ -97,40 +87,6 @@ export const RegisterView = ({onBack}: RegisterViewProps) => {
 
     return (
         <form className="mt-8 space-y-2" onSubmit={handleSubmit}>
-            <div>
-                <label htmlFor="firstname" className="sr-only">
-                    Fornavn
-                </label>
-                <input
-                    id="firstname"
-                    name="firstname"
-                    type="text"
-                    autoComplete="given-name"
-                    required
-                    className="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-jagt-500 focus:border-jagt-500 focus:z-10 sm:text-sm"
-                    placeholder="Fornavn"
-                    value={firstname}
-                    onChange={(e) => setFirstname(e.target.value)}
-                    disabled={isLoading}
-                />
-            </div>
-            <div>
-                <label htmlFor="surname" className="sr-only">
-                    Efternavn
-                </label>
-                <input
-                    id="surname"
-                    name="surname"
-                    type="text"
-                    autoComplete="family-name"
-                    required
-                    className="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-jagt-500 focus:border-jagt-500 focus:z-10 sm:text-sm"
-                    placeholder="Efternavn"
-                    value={surname}
-                    onChange={(e) => setSurname(e.target.value)}
-                    disabled={isLoading}
-                />
-            </div>
             <div>
                 <label htmlFor="email" className="sr-only">
                     Email
@@ -194,7 +150,7 @@ export const RegisterView = ({onBack}: RegisterViewProps) => {
             <div className="mt-6 space-y-2">
                 <button
                     type="submit"
-                    disabled={isLoading || !firstname || !surname || !email || !password || !confirmPassword}
+                    disabled={isLoading || !email || !password || !confirmPassword}
                     className="group cursor-pointer relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-jagt-600 hover:bg-jagt-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-jagt-500 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                     {isLoading ? 'Opretter bruger...' : 'Opret bruger'}

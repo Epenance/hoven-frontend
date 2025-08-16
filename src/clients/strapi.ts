@@ -9,8 +9,7 @@ export const strapiClient = strapi({
 });
 
 export interface RegisterData {
-    firstname: string;
-    surname: string;
+
     email: string;
     password: string;
 }
@@ -31,8 +30,6 @@ export const registerUser = async (userData: RegisterData) => {
                 username: userData.email,
                 email: userData.email,
                 password: userData.password,
-                firstname: userData.firstname,
-                surname: userData.surname,
             }),
         });
 

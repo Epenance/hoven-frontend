@@ -126,7 +126,7 @@ function VolunteerPortalContent() {
                     {user && (
                         <div className="flex justify-between items-center p-4 bg-gray-50 border-b">
                             <span className="text-sm text-gray-600">
-                                Logget ind som: {user.firstname} {user.surname} ({user.email})
+                                Logget ind som: {user.email}
                             </span>
                             <button
                                 onClick={handleLogout}
