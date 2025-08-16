@@ -51,11 +51,11 @@ export const ListView = ({onBackToCalendar, events = []}: ListViewProps) => {
 
     const shiftGroups = groupEventsByShift(events);
     const monthGroups = groupShiftsByMonth(shiftGroups);
-
+    
     // Filter out past months - only show current month and future months
     const currentDate = new Date();
     const currentMonthKey = `${currentDate.getFullYear()}-${String(currentDate.getMonth() + 1).padStart(2, '0')}`;
-
+    
     const filteredMonthKeys = Object.keys(monthGroups)
         .filter(monthKey => monthKey >= currentMonthKey)
         .sort();

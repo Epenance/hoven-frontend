@@ -130,7 +130,7 @@ function VolunteerPortalContent() {
                             </span>
                             <button
                                 onClick={handleLogout}
-                                className="px-3 py-1 text-sm bg-red-600 text-white rounded hover:bg-red-700"
+                                className="px-3 cursor-pointer py-1 text-sm bg-red-600 text-white rounded hover:bg-red-700"
                             >
                                 Log ud
                             </button>
@@ -153,7 +153,6 @@ function VolunteerPortalContent() {
                                     </h3>
                                     <p className="text-sm text-gray-600 mb-6">
                                         Din bruger skal godkendes af en administrator før du kan få adgang til vagtplanen.
-                                        Du vil få besked når din bruger er blevet aktiveret.
                                     </p>
                                     <div className="space-y-3">
                                         <p className="text-xs text-gray-500">

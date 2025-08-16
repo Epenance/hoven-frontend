@@ -114,7 +114,7 @@ export const LoginView = ({ onRegister }: LoginViewProps) => {
                 <button
                     type="submit"
                     disabled={isLoading || !email || !password}
-                    className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-jagt-600 hover:bg-jagt-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-jagt-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
+                    className="group cursor-pointer relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-jagt-600 hover:bg-jagt-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-jagt-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
                 >
                     {isLoading ? (
                         <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
