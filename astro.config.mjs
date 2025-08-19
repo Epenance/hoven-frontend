@@ -5,6 +5,8 @@ import { loadEnv } from "vite";
 
 import react from "@astrojs/react";
 
+import sitemap from '@astrojs/sitemap';
+
 // @ts-ignore
 const {SITE_URL, CMS_DOMAIN} = loadEnv(process.env.NODE_ENV, process.cwd(), "");
 
@@ -20,5 +22,5 @@ export default defineConfig({
     vite: {
       plugins: [tailwindcss()],
     },
-    integrations: [react()],
+    integrations: [react(), sitemap()],
 });
