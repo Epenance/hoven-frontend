@@ -63,11 +63,11 @@ export const ListView = ({onBackToCalendar, events = []}: ListViewProps) => {
     return (
         <div className="w-full">
             {/* Top bar with Kalender button */}
-            <div className="flex justify-between items-center p-4 bg-gray-50 border-b border-gray-200">
+            <div className="flex justify-between items-center py-4 bg-white border-b border-gray-200">
                 <h2 className="text-lg font-semibold text-gray-800">Liste visning</h2>
                 <button
                     onClick={onBackToCalendar}
-                    className="px-4 py-2 cursor-pointer bg-jagt-200 text-white rounded-md hover:bg-jagt-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-200"
+                    className="px-4 py-2 cursor-pointer bg-jagt-200 text-white rounded-sm hover:bg-jagt-600 focus:outline-none focus:ring-2 focus:ring-offset-2  border border-jagt-600"
                 >
                     Kalender
                 </button>
