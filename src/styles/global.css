@@ -1,9 +1,9 @@
 @import "tailwindcss";
+@source '../../node_modules/@sensinum/astro-strapi-blocks';
 
 @plugin "tailwindcss-animate";
 
 @theme {
-
   --color-jagt: #3B5A34;
   --color-jagt-50: #a0af8d;
   --color-jagt-100: #7a8f59;
@@ -149,3 +149,14 @@
   font-weight: 400;
 }
 
+.fc {
+  --fc-button-bg-color: var(--color-jagt-200);
+  --fc-button-active-bg-color: var(--color-jagt-600);
+  --fc-button-hover-bg-color: var(--color-jagt-600);
+  --fc-event-bg-color: var(--color-jagt-100);
+  --fc-event-border-color: var(--color-jagt-500);
+}
+
+.fc-event .fc-event-main {
+  padding: 5px;
+}

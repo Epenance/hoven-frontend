@@ -138,8 +138,6 @@ const site = Astro.site ? Astro.site.toString() : '';
 const siteUrl = site.endsWith('/') ? site.slice(0, -1) : site;
 const imagePath = seoImage.src.startsWith('/') ? seoImage.src : '/' + seoImage.src;
 finalSeo.Image.url = siteUrl + imagePath
-
-console.log({seoImage})
 ---
 <!doctype html>
 <html lang="en">

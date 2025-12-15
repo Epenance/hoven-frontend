@@ -42,14 +42,16 @@ export const CalendarView = ({onListViewClick, events = []}: CalendarViewViewPro
     }
 
     return (
-        <FullCalendar
-            plugins={[ dayGridPlugin ]}
-            initialView="dayGridMonth"
-            customButtons={customButtons}
-            events={events}
-            headerToolbar={headerToolbar}
-            buttonText={buttonTexts}
-            eventContent={renderEventContent}
-        />
+        <div className="mt-5">
+            <FullCalendar
+                plugins={[ dayGridPlugin ]}
+                initialView="dayGridMonth"
+                customButtons={customButtons}
+                events={events}
+                headerToolbar={headerToolbar}
+                buttonText={buttonTexts}
+                eventContent={renderEventContent}
+            />
+        </div>
     )
 }
