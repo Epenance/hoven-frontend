@@ -181,6 +181,15 @@ finalSeo.Image.url = siteUrl + imagePath
 		</div>
 		<slot />
 		<Footer></Footer>
+        <!-- Google tag (gtag.js) -->
+        <script is:inline type="text/partytown" src="https://www.googletagmanager.com/gtag/js?id=G-1ZB0D414XR"></script>
+        <script is:inline type="text/partytown">
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'G-1ZB0D414XR');
+        </script>
 	</body>
 </html>
 
