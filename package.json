@@ -9,8 +9,9 @@
     "astro": "astro"
   },
   "dependencies": {
-    "@astrojs/sitemap": "^3.5.0",
+    "@astrojs/partytown": "^2.1.4",
     "@astrojs/react": "^4.3.0",
+    "@astrojs/sitemap": "^3.5.0",
     "@fullcalendar/core": "^6.1.18",
     "@fullcalendar/daygrid": "^6.1.18",
     "@fullcalendar/react": "^6.1.18",
